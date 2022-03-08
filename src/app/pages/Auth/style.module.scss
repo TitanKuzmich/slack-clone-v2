@@ -1,0 +1,94 @@
+@import "styles/palette";
+@import "styles/mixins";
+
+.auth {
+  &_wrapper {
+    background-color: $grey;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+
+  &_container {
+    @include auth_container();
+  }
+
+  &_header {
+    background-color: $slackColor;
+    text-align: center;
+    padding: 13px 16px;
+    font-size: 28px;
+    font-weight: 500;
+    color: $white;
+  }
+
+  &_content {
+    background-color: $white;
+    padding: 30px 16px;
+    position: relative;
+
+    &__error {
+      position: absolute;
+      top: 10px;
+      left: 30px;
+      font-size: 12px;
+      font-weight: 300;
+      color: $red;
+    }
+
+    &__input {
+      position: relative;
+
+      &:not(:first-child) {
+        margin-top: 15px;
+      }
+
+      input {
+        @include input();
+      }
+
+      @include underline($greyLight, $grey);
+
+      &:focus-within:after {
+        transform: scale(1);
+      }
+    }
+
+    &__submit {
+      @include button($slackBright);
+      font-size: 20px;
+      padding: 10px 16px;
+      width: fit-content;
+      margin: 30px auto 0 auto;
+    }
+  }
+
+  &_footer {
+    border-top: 1px solid $grey;
+    padding: 15px;
+    color: $slackColor;
+    font-size: 14px;
+
+    p:not(:first-child) {
+      margin-top: 5px;
+    }
+
+    span {
+      color: $slackColor;
+      transition: all .6s ease;
+      cursor: pointer;
+      position: relative;
+      padding: 1px 0;
+
+      @include underline($slackDark, $slackBright);
+
+      &:hover {
+        color: $slackDark;
+
+        &:after {
+          transform: scale(1);
+        }
+      }
+    }
+  }
+}

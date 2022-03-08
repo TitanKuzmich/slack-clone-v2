@@ -1,0 +1,204 @@
+@import "styles/palette";
+@import "styles/mixins";
+
+.modal {
+  &_cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: $opacityRgba;
+  }
+
+  &_wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $white;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 50px;
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 30;
+  }
+
+  &_header {
+    background-color: $slackColor;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 16px;
+
+    .close_icon {
+      fill: $white;
+      transition: all .3s ease;
+    }
+
+    .close_icon__wrapper {
+      @include icon_wrapper(transparent);
+
+      &:hover {
+        background-color: $white;
+
+        .close_icon {
+          fill: $slackColor !important;
+        }
+      }
+    }
+
+    &__text {
+      font-size: 18px;
+      color: $white;
+    }
+  }
+
+  &_content {
+    background-color: $white;
+    padding: 30px 16px;
+
+    &__text {
+      font-size: 16px;
+      color: $black
+    }
+
+    &__input {
+      position: relative;
+
+      input {
+        @include input();
+      }
+
+      @include underline($slackBorder, $slackLight);
+
+      &:focus-within:after {
+        transform: scale(1);
+      }
+    }
+
+    &__radio {
+      margin-top: 15px;
+      border-radius: 6px;
+      border: 1px solid $slackBorder;
+      overflow: hidden;
+
+      span {
+        margin-bottom: 6px;
+        padding: 6px 12px;
+        display: block;
+        color: $black;
+        font-size: 18px;
+      }
+    }
+
+    &__list {
+      border-radius: 6px;
+      overflow-y: auto;
+      border: 1px solid $slackBorder;
+      max-height: 238px;
+      margin-top: 15px;
+
+      span {
+        margin-bottom: 6px;
+        padding: 6px 12px;
+        display: block;
+        color: $black;
+        font-size: 18px;
+      }
+    }
+
+    &__upload {
+      position: relative;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 18px;
+      color: $slackColor;
+      border: 1px dashed $slackColor;
+      transition: all .3s ease;
+      text-align: center;
+      cursor: pointer;
+      margin: 0 auto;
+      display: block;
+      width: fit-content;
+
+      &:hover {
+        color: $slackDark;
+        border: 1px dashed $slackDark;
+      }
+    }
+
+    .uploaded {
+      &_files {
+        margin-top: 20px;
+        max-height: 170px;
+        overflow-y: auto;
+      }
+
+      &_file {
+        padding: 5px 12px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+        border-radius: 6px;
+        color: $greyDark;
+
+        &__done {
+          background-color: $slackLight;
+        }
+
+        &:not(:first-child) {
+          margin-top: 5px;
+        }
+
+        &_delete {
+          fill: $greyDark;
+          cursor: pointer;
+
+          &:hover {
+            fill: $red;
+          }
+        }
+      }
+    }
+  }
+
+  &_footer {
+    border-top: 1px solid $grey;
+    background-color: $white;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &_submit {
+    @include button($slackColor);
+
+    &__disabled {
+      background-color: lighten($slackColor, 40%);
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+}
+
+@keyframes loading {
+  0% {
+    left: -45%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+
+
+
+
+
+

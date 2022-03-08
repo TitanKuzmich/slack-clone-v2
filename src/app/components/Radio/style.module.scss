@@ -1,0 +1,8 @@
+@import "styles/mixins";
+
+$radio-size: 10px;
+$radio-checked-size: 8px;
+
+.radio_button {
+  @include radioAndCheckbox($radio-size, $radio-checked-size);
+}

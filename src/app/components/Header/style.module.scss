@@ -1,0 +1,116 @@
+@import "styles/palette";
+@import "styles/mixins";
+
+.header {
+  width: 100%;
+  height: 70px;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: $slackColor;
+  padding: 15px 30px;
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  justify-content: center;
+
+  &_logo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    img {
+      width: 35px;
+      height: 35px;
+      margin-right: 10px;
+    }
+
+    p {
+      font-size: 28px;
+      color: $pale;
+    }
+  }
+
+  &_apps {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .icon_wrapper {
+      @include icon_wrapper($slackBorder);
+    }
+
+    .apps_icon {
+      fill: $pale;
+    }
+  }
+
+  &_avatar {
+    position: relative;
+
+    &__open {
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+      }
+    }
+
+    img, &__blank {
+      margin-left: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 100%;
+      cursor: pointer;
+    }
+
+    &__blank {
+      text-transform: uppercase;
+      display: grid;
+      place-items: center;
+      background-color: $greenLight;
+      color: $white;
+    }
+
+    .info_pop_up {
+      @include pop_up();
+      display: grid;
+      grid-template-rows: 1fr auto;
+      justify-items: center;
+
+      .sign_out {
+        @include button($red);
+        margin: 15px auto 20px auto;
+      }
+
+      &__info {
+        text-align: center;
+        font-size: 14px;
+        border-bottom: 1px solid $grey;
+        padding: 20px 15px;
+        white-space: nowrap;
+
+        p:first-child {
+          font-weight: 500;
+          font-size: 16px;
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

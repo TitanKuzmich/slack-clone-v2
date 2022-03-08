@@ -1,0 +1,66 @@
+@import "styles/palette";
+
+.sidebar {
+  &_container {
+    background-color: $slackColor;
+    color: $pale;
+    flex: 0.3;
+    border-top: 1px solid $slackBorder;
+    max-width: 260px;
+  }
+
+  &_header {
+    border-bottom: 1px solid $slackBorder;
+    padding: 13px;
+    transition: all .15s ease;
+
+    &:hover {
+      opacity: 0.9;
+      background-color: $slackDark;
+    }
+  }
+
+  &_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    h2 {
+      font-size: 20px;
+      font-weight: 900;
+      transition: all .15s ease;
+    }
+
+    &__edit {
+      width: 18px;
+      height: 18px;
+      fill: $pale;
+      transition: all .15s ease;
+    }
+
+    &:hover {
+      h2 {
+        color: $white;
+      }
+
+      &__edit {
+        fill: $white;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

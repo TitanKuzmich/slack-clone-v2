@@ -1,0 +1,18 @@
+@import "styles/mixins";
+
+$radio-size: 20px;
+$radio-checked-size: 16px;
+
+.checkbox {
+  @include radioAndCheckbox($radio-size, $radio-checked-size);
+  padding: 6px 12px 6px 6px;
+
+  label {
+    padding-left: 30px;
+
+    &::before,
+    &::after {
+      border-radius: 6px;
+    }
+  }
+}
