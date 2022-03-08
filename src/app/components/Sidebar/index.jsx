@@ -34,9 +34,9 @@ const Sidebar = () => {
             {/*    />*/}
             {/*))}*/}
 
-            {sidebarSecondaryOptions.map((option) => (
+            {sidebarSecondaryOptions.map((option, ind) => (
                 <SidebarOption
-                    key={nextId()}
+                    key={`${option.title}_${ind}`}
                     icon={option.icon}
                     title={option.title}
                     haveDivider={option.haveDivider}

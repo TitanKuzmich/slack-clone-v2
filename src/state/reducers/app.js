@@ -6,7 +6,7 @@ const defaultState = {
     notifications: [],
     roomId: null,
     userList: [],
-    isLoading: null
+    isLoading: false
 }
 
 const app = createReducer(
