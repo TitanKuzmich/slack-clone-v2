@@ -1,4 +1,5 @@
 @import "styles/palette";
+@import "styles/mixins";
 
 .sidebar {
   &_container {
@@ -47,6 +48,32 @@
       &__edit {
         fill: $white;
       }
+    }
+  }
+
+  &_options_container {
+    display: grid;
+    grid-template-rows: auto 365px;
+    grid-row-gap: 15px;
+  }
+
+  &_channels {
+    &_container {
+      position: relative;
+      padding-top: 92px;
+    }
+
+    &_header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    &_content {
+      overflow-y: auto;
+      max-height: 273px;
+      @include custom_scrollbar(4px, $greyLight);
     }
   }
 }

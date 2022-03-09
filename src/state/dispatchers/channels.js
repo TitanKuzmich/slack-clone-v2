@@ -1,34 +1,42 @@
 import * as actions from "../actions/channels"
 import {db} from "lib/firebase"
 
-export const getChannelsList = () => async (dispatch) => {
+export const getChannelsList = (id) => async (dispatch) => {
     dispatch(actions.getChannelsListRequest())
 
     try {
-        const response = await db
+        const responsePrivate = await db
             .channels
+            .where('usersIds', 'array-contains', id)
+            .where('private', '==', true)
+            .get()
+        const responsePublic = await db
+            .channels
+            .where('private', '==', false)
             .get()
 
-        const channels = response.docs.map(channel => db.formatDoc(channel))
+        const privateChannels = responsePrivate.docs.map(channel => db.formatDoc(channel))
+        const publicChannels = responsePublic.docs.map(channel => db.formatDoc(channel))
 
-        dispatch(actions.getChannelsListSuccess(channels))
+        dispatch(actions.getChannelsListSuccess([...privateChannels, ...publicChannels]))
 
     } catch {
         dispatch(actions.getChannelsListFail())
     }
 }
 
-export const getDirectsList = () => async (dispatch) => {
+export const getDirectsList = (id) => async (dispatch) => {
     dispatch(actions.getDirectsListRequest())
 
     try {
         const response = await db
-            .channels
+            .directs
+            .where('usersIds', 'array-contains', id)
             .get()
 
-        const channels = response.docs.map(channel => db.formatDoc(channel))
+        const directs = response.docs.map(direct => db.formatDoc(direct))
 
-        dispatch(actions.getDirectsListSuccess(channels))
+        dispatch(actions.getDirectsListSuccess(directs))
 
     } catch {
         dispatch(actions.getDirectsListFail())
@@ -52,9 +60,9 @@ export const createRoom = (data, channels, onClose) => async (dispatch) => {
                 .add(data)
 
         if (channels) {
-            dispatch(getChannelsList())
+            dispatch(getChannelsList(data.creator))
         } else {
-            dispatch(getDirectsList())
+            dispatch(getDirectsList(data.creator))
         }
 
         onClose()

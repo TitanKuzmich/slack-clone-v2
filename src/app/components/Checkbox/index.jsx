@@ -13,7 +13,7 @@ const Checkbox = ({label, labelClassName, disabled, indeterminate, onChange, dat
             return false
         }
 
-        onChange(e.currentTarget.checked, data.id)
+        onChange(e.currentTarget.checked, data.id, data.photoURL)
         return true
     }
 

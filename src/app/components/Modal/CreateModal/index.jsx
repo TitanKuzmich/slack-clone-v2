@@ -24,14 +24,15 @@ const CreateModal = ({onConfirmAction, onCloseAction, headerName, data, setData,
     const {userList, isLoading} = useSelector(state => state.app)
     const {isLoadingChannels, isLoadingDirects} = useSelector(state => state.channels)
 
-    const onUserIdAdd = (_, userId) => {
+    const onUserIdAdd = (_, userId, previewURL) => {
         let usersIds = data.usersIds
 
         usersIds = !data.usersIds.includes(userId) ? [...usersIds, userId] : usersIds.filter(id => id !== userId)
 
         setData({
             ...data,
-            usersIds
+            usersIds,
+            previewURL: !channels && previewURL
         })
     }
 
@@ -40,10 +41,8 @@ const CreateModal = ({onConfirmAction, onCloseAction, headerName, data, setData,
     }, [data.private])
 
     useEffect(() => {
-        return () => {
-            console.log("rerender")
-        }
-    })
+        !channels && dispatch(getUserList(user.uid))
+    }, [channels])
 
     const header = () => {
         return (
@@ -87,18 +86,17 @@ const CreateModal = ({onConfirmAction, onCloseAction, headerName, data, setData,
                 <div className={style.modal_content__list}>
                     {isLoading ? (
                         <div className="loading_wrapper">
-                            <Oval color="#33A852" height={20} width={20}/>
+                            <Oval color="#f8f8f8" height={20} width={20}/>
                         </div>
                     ) : (
                         <>
                             <span>Choose users:</span>
-                            {userList.map(user => (
-                                <div key={nextId()}>
+                            {userList.map((user, ind) => (
+                                <div key={`${user.name}_${ind}`}>
                                     <Checkbox
                                         label={user.name}
                                         data={user}
-                                        checked={data.usersIds.includes(user.uid)}
-                                        onChange={(checked, userId) => onUserIdAdd(checked, userId)}
+                                        onChange={(checked, userId, previewURL) => onUserIdAdd(checked, userId, previewURL)}
                                     />
                                 </div>
                             ))}

@@ -42,7 +42,7 @@ const channels = createReducer(
             return {
                 ...state,
                 isLoadingDirects: false,
-                channels: payload
+                directs: payload
             }
         },
         [actions.getDirectsListFail.getType()](state) {

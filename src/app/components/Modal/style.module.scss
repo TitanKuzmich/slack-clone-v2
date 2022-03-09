@@ -178,6 +178,8 @@
 
   &_submit {
     @include button($slackColor);
+    display: grid;
+    place-items: center;
 
     &__disabled {
       background-color: lighten($slackColor, 40%);

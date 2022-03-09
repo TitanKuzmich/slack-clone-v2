@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch} from "react-redux"
 import cn from 'classnames'
 import {useAuthState} from "react-firebase-hooks/auth"
 
 import {auth} from "lib/firebase"
-import {createRoom} from "state/dispatchers/channels"
+import {createRoom, getChannelsList} from "state/dispatchers/channels"
 import {enterRoom} from "state/actions/app"
 import CreateModal from "components/Modal/CreateModal"
 import Icon from "components/Icon"
@@ -15,10 +15,11 @@ const DEFAULT_DATA = {
     name: "",
     private: false,
     creator: "",
+    previewURL: "",
     usersIds: []
 }
 
-const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channels}) => {
+const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channels, photoURL}) => {
     const [user] = useAuthState(auth)
     const dispatch = useDispatch()
 
@@ -39,7 +40,7 @@ const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channel
     }
 
     const onCreateRoom = () => {
-        const channelsData = {
+        let channelsData = {
             ...data,
             creator: user.uid,
             usersIds: [
@@ -51,6 +52,10 @@ const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channel
         dispatch(createRoom(channelsData, channels, onClose))
     }
 
+    useEffect(() => {
+        console.log(photoURL)
+    })
+
     return (
         <>
             {isOpen &&
@@ -61,7 +66,7 @@ const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channel
                 headerName={channels ? 'Channel' : 'Chat'}
                 onConfirmAction={onCreateRoom}
                 onCloseAction={onClose}
-                channels
+                channels={channels}
             />
             }
 
@@ -76,14 +81,38 @@ const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channel
                         : selectChannel
                 }
             >
-                {icon && <Icon icon={icon} classIcon={style.option_icon}/>}
                 {icon ? (
-                    <h3>{title}</h3>
+                    <>
+                        <div className={style.option_icon__container}>
+                            <Icon icon={icon} classIcon={style.option_icon}/>
+                        </div>
+                        <h3>{title}</h3>
+                    </>
+                ) : (channels ? (
+                    <>
+                        <span>#</span>
+                        <h3>{title}</h3>
+                    </>
                 ) : (
-                    <h3>
-                        <span>#</span> {title}
-                    </h3>
-                )}
+                    <>
+                        {photoURL ? (
+                            <>
+                                <img
+                                    src={photoURL}
+                                    alt="Preview"
+                                />
+                                <h3>{title}</h3>
+                            </>
+                        ) : (
+                            <>
+                                <div className={style.option_avatar}>
+                                    {title.slice(0, 2)}
+                                </div>
+                                <h3>{title}</h3>
+                            </>
+                        )}
+                    </>
+                ))}
             </div>
         </>
     )

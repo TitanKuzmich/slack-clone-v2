@@ -76,6 +76,37 @@
   }
 }
 
+@mixin truncate_ellipsis($width) {
+  width: $width;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin custom_scrollbar($width, $color) {
+  &::-webkit-scrollbar {
+    width: $width;
+    right: 2px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    border-radius: 3px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: $color;
+    border-radius: 3px;
+    outline: 1px solid $slackColor;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: $color;
+  }
+}
+
 @mixin input() {
   border: none;
   font-size: 18px;

@@ -1,10 +1,13 @@
 @import "styles/palette";
+@import "styles/mixins";
 
 .option {
   &_container {
     padding: 13px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 24px 1fr;
     align-items: center;
+    grid-column-gap: 8px;
     font-size: 14px;
     cursor: pointer;
     transition: all .15s ease;
@@ -26,11 +29,29 @@
       display: flex;
       align-items: center;
       font-weight: 500;
+      @include truncate_ellipsis(100%);
+      color: $pale;
+    }
 
-      span {
-        display: block;
-        padding-right: 13px;
-      }
+    span {
+      display: block;
+      text-align: center;
+    }
+
+    img, .option_avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 100%;
+    }
+
+    .option_avatar {
+      text-transform: uppercase;
+      display: grid;
+      place-items: center;
+      background-color: $slackColor;
+      border: 1px solid $pale;
+      color: $white;
+      font-size: 12px;
     }
   }
 
@@ -39,7 +60,11 @@
     stroke: $pale;
     width: 14px;
     height: 14px;
-    margin-right: 13px;
+
+    &__container {
+      display: grid;
+      place-items: center;
+    }
   }
 }
 

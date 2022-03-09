@@ -1,20 +1,29 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import nextId from "react-id-generator"
+import {Oval} from "react-loader-spinner"
+import {useAuthState} from "react-firebase-hooks/auth"
 
-import {db} from "lib/firebase"
+import {auth} from "lib/firebase"
+import {getChannelsList, getDirectsList} from "state/dispatchers/channels"
 import Icon from "components/Icon"
 import SidebarOption from "components/SidebarOption"
-import {sidebarOptions, sidebarSecondaryOptions} from "components/Sidebar/helper"
+import {sidebarOptions, sidebarChannelsOptions, sidebarDirectsOptions} from "components/Sidebar/helper"
 
 import style from './style.module.scss'
 import icons from "assets/svg"
-import {Oval} from "react-loader-spinner"
 
 const Sidebar = () => {
-    const {roomId} = useSelector(state => state.app)
+    const [user] = useAuthState(auth)
 
+    const {roomId} = useSelector(state => state.app)
     const {channels, isLoadingChannels, directs, isLoadingDirects} = useSelector(state => state.channels)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getChannelsList(user.uid))
+        dispatch(getDirectsList(user.uid))
+    }, [])
 
     return (
         <div className={style.sidebar_container}>
@@ -25,45 +34,93 @@ const Sidebar = () => {
                 </div>
             </div>
 
-            {/*{sidebarOptions.map((option, ind) => (*/}
-            {/*    <SidebarOption*/}
-            {/*        key={`${option.title}_${ind}`}*/}
-            {/*        Icon={option.icon}*/}
-            {/*        title={option.title}*/}
-            {/*        haveDivider={option.haveDivider}*/}
-            {/*    />*/}
-            {/*))}*/}
+            <div className={style.sidebar_options_container}>
+                {/*{sidebarOptions.map((option, ind) => (*/}
+                {/*    <SidebarOption*/}
+                {/*        key={`${option.title}_${ind}`}*/}
+                {/*        Icon={option.icon}*/}
+                {/*        title={option.title}*/}
+                {/*        haveDivider={option.haveDivider}*/}
+                {/*    />*/}
+                {/*))}*/}
 
-            {sidebarSecondaryOptions.map((option, ind) => (
-                <SidebarOption
-                    key={`${option.title}_${ind}`}
-                    icon={option.icon}
-                    title={option.title}
-                    haveDivider={option.haveDivider}
-                    addAction={option.addAction}
-                    channels
-                />
-            ))}
-
-            {!isLoadingChannels
-                ? channels.length > 0 && (
-                <>
-                    {channels.map((channel) => (
-                        <SidebarOption
-                            key={channel.id}
-                            id={channel.id}
-                            title={channel.name}
-                            active={roomId}
-                        />
-                    ))}
-                </>
-            ) : (
-                    <div className="loading_wrapper">
-                        <Oval color="#33A852" height={20} width={20}/>
+                <div className={style.sidebar_channels_container}>
+                    <div className={style.sidebar_channels_header}>
+                        {sidebarChannelsOptions.map((option, ind) => (
+                            <SidebarOption
+                                key={`${option.title}_${ind}`}
+                                icon={option.icon}
+                                title={option.title}
+                                haveDivider={option.haveDivider}
+                                addAction={option.addAction}
+                                channels
+                            />
+                        ))}
                     </div>
-                )
-            }
+
+                    <div className={style.sidebar_channels_content}>
+                        {!isLoadingChannels
+                            ? channels.length > 0 && (
+                            <>
+                                {channels.map((channel) => (
+                                    <SidebarOption
+                                        key={channel.id}
+                                        id={channel.id}
+                                        title={channel.name}
+                                        active={roomId}
+                                        channels
+                                    />
+                                ))}
+                            </>
+                        ) : (
+                                <div className="loading_wrapper">
+                                    <Oval color="#f8f8f8" height={20} width={20}/>
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+                
+                <div className={style.sidebar_channels_container}>
+                    <div className={style.sidebar_channels_header}>
+                        {sidebarDirectsOptions.map((option, ind) => (
+                            <SidebarOption
+                                key={`${option.title}_${ind}`}
+                                icon={option.icon}
+                                title={option.title}
+                                haveDivider={option.haveDivider}
+                                addAction={option.addAction}
+                                channels={false}
+                            />
+                        ))}
+                    </div>
+
+                    <div className={style.sidebar_channels_content}>
+                        {!isLoadingDirects
+                            ? directs.length > 0 && (
+                            <>
+                                {directs.map((direct) => (
+                                    <SidebarOption
+                                        key={direct.id}
+                                        id={direct.id}
+                                        photoURL={direct.previewURL}
+                                        title={direct.name}
+                                        active={roomId}
+                                        channels={false}
+                                    />
+                                ))}
+                            </>
+                        ) : (
+                                <div className="loading_wrapper">
+                                    <Oval color="#f8f8f8" height={20} width={20}/>
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
+
     )
 }
 

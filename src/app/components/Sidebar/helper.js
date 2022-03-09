@@ -31,7 +31,7 @@ export const sidebarOptions = [
     }
 ]
 
-export const sidebarSecondaryOptions = [
+export const sidebarChannelsOptions = [
     {
         icon: icons.Down,
         title: "Channels",
@@ -41,7 +41,19 @@ export const sidebarSecondaryOptions = [
         icon: icons.Plus,
         title: "Add channel",
         addAction: true,
+    }
+]
 
+export const sidebarDirectsOptions = [
+    {
+        icon: icons.Down,
+        title: "Direct messages",
+        haveDivider: true
+    },
+    {
+        icon: icons.Plus,
+        title: "Add chat",
+        addAction: true,
     },
 
 ]

@@ -73,7 +73,7 @@ const Modal = ({
                         >
                             {isLoading
                                 ? <Oval
-                                    color="#3f0f40" height={20} width={20}
+                                    color="#f8f8f8" height={20} width={20}
                                 />
                                 : <span>Submit</span>
                             }
