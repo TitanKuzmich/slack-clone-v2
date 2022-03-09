@@ -6,7 +6,7 @@ import {useAuthState} from "react-firebase-hooks/auth"
 import {auth} from "lib/firebase"
 import {getChannelsList, getDirectsList} from "state/dispatchers/channels"
 import Icon from "components/Icon"
-import SidebarOption from "components/SidebarOption"
+import SidebarOption from "components/Sidebar/SidebarOption"
 import {sidebarOptions, sidebarChannelsOptions, sidebarDirectsOptions} from "components/Sidebar/helper"
 
 import style from './style.module.scss'
@@ -53,6 +53,7 @@ const Sidebar = () => {
                                 title={option.title}
                                 haveDivider={option.haveDivider}
                                 addAction={option.addAction}
+                                bold={option.bold}
                                 channels
                             />
                         ))}
@@ -81,7 +82,7 @@ const Sidebar = () => {
                     </div>
                 </div>
                 
-                <div className={style.sidebar_channels_container}>
+                <div className={style.sidebar_directs_container}>
                     <div className={style.sidebar_channels_header}>
                         {sidebarDirectsOptions.map((option, ind) => (
                             <SidebarOption
@@ -90,12 +91,12 @@ const Sidebar = () => {
                                 title={option.title}
                                 haveDivider={option.haveDivider}
                                 addAction={option.addAction}
-                                channels={false}
+                                bold={option.bold}
                             />
                         ))}
                     </div>
 
-                    <div className={style.sidebar_channels_content}>
+                    <div className={style.sidebar_directs_content}>
                         {!isLoadingDirects
                             ? directs.length > 0 && (
                             <>
@@ -106,7 +107,6 @@ const Sidebar = () => {
                                         photoURL={direct.previewURL}
                                         title={direct.name}
                                         active={roomId}
-                                        channels={false}
                                     />
                                 ))}
                             </>

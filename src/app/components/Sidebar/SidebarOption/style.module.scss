@@ -31,6 +31,10 @@
       font-weight: 500;
       @include truncate_ellipsis(100%);
       color: $pale;
+
+      &.option_title__bold {
+        font-weight: 900;
+      }
     }
 
     span {

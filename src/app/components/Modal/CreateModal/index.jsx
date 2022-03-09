@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react'
-import nextId from "react-id-generator"
+import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {useAuthState} from "react-firebase-hooks/auth"
 import {Oval} from "react-loader-spinner"
@@ -8,6 +7,7 @@ import {auth} from "lib/firebase"
 import {getUserList} from "state/dispatchers/app"
 import Modal from "components/Modal"
 import RadioGroup from "components/Radio/Group"
+import RadioGroupDynamic from "components/Radio/RadioDynamic"
 import Checkbox from "components/Checkbox"
 
 import style from '../style.module.scss'
@@ -82,7 +82,39 @@ const CreateModal = ({onConfirmAction, onCloseAction, headerName, data, setData,
                     </div>
                 )}
 
-                {(data.private || !channels) &&
+                {!channels && (
+                    <div className={style.modal_content__radio}>
+                        {isLoading ? (
+                            <div className="loading_wrapper">
+                                <Oval color="#f8f8f8" height={20} width={20}/>
+                            </div>
+                        ) : (
+                            <>
+                                <span>Choose user:</span>
+                                <RadioGroupDynamic
+                                    value={data.usersIds[0]}
+                                    valueField="id"
+                                    labelField="name"
+                                    onChange={item => {
+                                        console.log(data)
+                                        setData({
+                                            ...data,
+                                            previewURL: item.photoURL || "",
+                                            usersIds: [item.id]
+                                        })
+                                    }}
+                                    items={userList}
+                                />
+                            </>
+                        )}
+
+                        {!isLoading && !userList.length > 0 && (
+                            <p>There aren't any users:)</p>
+                        )}
+                    </div>
+                )}
+
+                {(data.private && channels) &&
                 <div className={style.modal_content__list}>
                     {isLoading ? (
                         <div className="loading_wrapper">

@@ -54,10 +54,10 @@
   &_options_container {
     display: grid;
     grid-template-rows: auto 365px;
-    grid-row-gap: 15px;
+    //grid-row-gap: 15px;
   }
 
-  &_channels {
+  &_channels, &_directs {
     &_container {
       position: relative;
       padding-top: 92px;
@@ -74,6 +74,13 @@
       overflow-y: auto;
       max-height: 273px;
       @include custom_scrollbar(4px, $greyLight);
+    }
+  }
+
+  &_directs {
+    &_container {
+      border-top: 1px solid $slackBorder;
+      border-bottom: 1px solid $slackBorder;
     }
   }
 }

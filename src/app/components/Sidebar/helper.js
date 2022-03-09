@@ -35,7 +35,8 @@ export const sidebarChannelsOptions = [
     {
         icon: icons.Down,
         title: "Channels",
-        haveDivider: true
+        haveDivider: true,
+        bold: true
     },
     {
         icon: icons.Plus,
@@ -48,7 +49,8 @@ export const sidebarDirectsOptions = [
     {
         icon: icons.Down,
         title: "Direct messages",
-        haveDivider: true
+        haveDivider: true,
+        bold: true
     },
     {
         icon: icons.Plus,

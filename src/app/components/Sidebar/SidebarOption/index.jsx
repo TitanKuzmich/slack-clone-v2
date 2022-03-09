@@ -19,7 +19,17 @@ const DEFAULT_DATA = {
     usersIds: []
 }
 
-const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channels, photoURL}) => {
+const SidebarOption = ({
+                           icon,
+                           title,
+                           id,
+                           active,
+                           bold,
+                           addAction,
+                           haveDivider,
+                           channels,
+                           photoURL
+                       }) => {
     const [user] = useAuthState(auth)
     const dispatch = useDispatch()
 
@@ -52,10 +62,6 @@ const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channel
         dispatch(createRoom(channelsData, channels, onClose))
     }
 
-    useEffect(() => {
-        console.log(photoURL)
-    })
-
     return (
         <>
             {isOpen &&
@@ -86,7 +92,9 @@ const SidebarOption = ({icon, title, id, active, addAction, haveDivider, channel
                         <div className={style.option_icon__container}>
                             <Icon icon={icon} classIcon={style.option_icon}/>
                         </div>
-                        <h3>{title}</h3>
+                        <h3 className={cn({[style.option_title__bold]: bold})}>
+                            {title}
+                        </h3>
                     </>
                 ) : (channels ? (
                     <>
