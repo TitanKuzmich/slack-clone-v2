@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {useDispatch} from "react-redux"
 import cn from 'classnames'
 import {useAuthState} from "react-firebase-hooks/auth"
 
 import {auth} from "lib/firebase"
-import {createRoom, getChannelsList} from "state/dispatchers/channels"
+import {createRoom} from "state/dispatchers/channels"
 import {enterRoom} from "state/actions/app"
 import CreateModal from "components/Modal/CreateModal"
+import TitleWithAvatar from "components/TitleWithAvatar"
 import Icon from "components/Icon"
 
 import style from './style.module.scss'
@@ -27,8 +28,8 @@ const SidebarOption = ({
                            bold,
                            addAction,
                            haveDivider,
-                           channels,
-                           photoURL
+                           photoURL,
+                           channels = false
                        }) => {
     const [user] = useAuthState(auth)
     const dispatch = useDispatch()
@@ -40,6 +41,7 @@ const SidebarOption = ({
         if (id) {
             dispatch(enterRoom({
                 roomId: id,
+                channels: channels
             }))
         }
     }
@@ -96,31 +98,13 @@ const SidebarOption = ({
                             {title}
                         </h3>
                     </>
-                ) : (channels ? (
-                    <>
-                        <span>#</span>
-                        <h3>{title}</h3>
-                    </>
                 ) : (
-                    <>
-                        {photoURL ? (
-                            <>
-                                <img
-                                    src={photoURL}
-                                    alt="Preview"
-                                />
-                                <h3>{title}</h3>
-                            </>
-                        ) : (
-                            <>
-                                <div className={style.option_avatar}>
-                                    {title.slice(0, 2)}
-                                </div>
-                                <h3>{title}</h3>
-                            </>
-                        )}
-                    </>
-                ))}
+                    <TitleWithAvatar.TitleWithAvatarNoWrap
+                        channels={channels}
+                        photoURL={photoURL}
+                        title={title}
+                    />
+                )}
             </div>
         </>
     )

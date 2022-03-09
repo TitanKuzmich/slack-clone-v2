@@ -21,6 +21,11 @@ import People from "./people.svg"
 import Copy from "./copy.svg"
 import Down from "./down.svg"
 import Plus from "./plus.svg"
+import Attachment from "./attachment.svg"
+import Send from "./send.svg"
+import Info from "./info.svg"
+import Smile from "./smile.svg"
+import AddReaction from "./add-reaction.svg"
 
 const icons = {
     Search,
@@ -45,7 +50,12 @@ const icons = {
     People,
     Copy,
     Down,
-    Plus
+    Plus,
+    Attachment,
+    Send,
+    Info,
+    Smile,
+    AddReaction,
 }
 
 export default icons

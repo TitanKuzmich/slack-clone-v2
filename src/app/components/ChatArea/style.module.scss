@@ -1,0 +1,86 @@
+@import "styles/palette";
+@import "styles/mixins";
+
+.chat {
+  &_wrapper {
+    flex: 0.7;
+    flex-grow: 1;
+
+    &__empty {
+      display: grid;
+      place-items: center;
+    }
+  }
+
+  &_container {
+
+  }
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 30px;
+    background-color: $white;
+    border-bottom: 1px solid $greyLight;
+
+    &__left {
+      display: flex;
+      flex-direction: column;
+
+      p {
+        margin-top: 6px;
+        color: $greyDark;
+        font-size: 14px;
+      }
+    }
+
+    &_info {
+
+      h3, span {
+        color: $black;
+      }
+
+      img, div {
+        width: 30px;
+        height: 30px;
+      }
+
+      div {
+        background-color: $slackColor;
+        border: 1px solid $slackColor;
+        font-size: 14px;
+      }
+    }
+
+    &__right {
+      display: flex;
+      align-items: center;
+
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+
+  &_details__icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+
+  &_messages {
+    overflow-y: scroll;
+    @include custom_scrollbar(4px, $greyLight);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -7,6 +7,7 @@ import App from "./App"
 import store from "state/store"
 
 import "styles/general.scss"
+import 'emoji-mart/css/emoji-mart.css'
 
 ReactDOM.render(
     <React.StrictMode>

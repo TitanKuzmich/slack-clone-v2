@@ -25,37 +25,8 @@
       border-bottom: 1px solid $slackBorder;
     }
 
-    h3 {
-      display: flex;
-      align-items: center;
-      font-weight: 500;
-      @include truncate_ellipsis(100%);
-      color: $pale;
-
-      &.option_title__bold {
-        font-weight: 900;
-      }
-    }
-
-    span {
-      display: block;
-      text-align: center;
-    }
-
-    img, .option_avatar {
-      width: 24px;
-      height: 24px;
-      border-radius: 100%;
-    }
-
-    .option_avatar {
-      text-transform: uppercase;
-      display: grid;
-      place-items: center;
-      background-color: $slackColor;
-      border: 1px solid $pale;
-      color: $white;
-      font-size: 12px;
+    .option_title__bold {
+      font-weight: 700;
     }
   }
 

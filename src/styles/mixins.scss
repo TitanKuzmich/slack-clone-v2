@@ -76,8 +76,7 @@
   }
 }
 
-@mixin truncate_ellipsis($width) {
-  width: $width;
+@mixin truncate() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -4,7 +4,7 @@ import * as actions from "../actions/app"
 
 const defaultState = {
     notifications: [],
-    roomId: null,
+    room: {},
     userList: [],
     isLoading: false
 }
@@ -26,7 +26,10 @@ const app = createReducer(
         [actions.enterRoom.getType()](state, payload) {
             return {
                 ...state,
-                roomId: payload.roomId
+                room: {
+                    roomId: payload.roomId,
+                    channels: payload.channels
+                }
             }
         },
         [actions.getUserListRequest.getType()](state) {
