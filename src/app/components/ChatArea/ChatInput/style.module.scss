@@ -61,6 +61,15 @@
             stroke: none;
           }
         }
+
+        &__disable {
+          cursor: default;
+          stroke: $greyDark;
+
+          &:hover {
+            stroke: $greyDark;
+          }
+        }
       }
     }
 

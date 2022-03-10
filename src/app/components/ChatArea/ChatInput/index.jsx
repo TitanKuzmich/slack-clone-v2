@@ -25,6 +25,7 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
     const textAreaRef = useRef(null)
 
     const [showEmoji, setShowEmoji] = useState(false)
+    const [enableSend, setEnableSend] = useState(false)
     const [data, setData] = useState(DEFAULT_DATA)
 
     const onEmojiClick = (e) => {
@@ -131,12 +132,9 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
     }
 
     const sendMessage = (shortcut) => {
-        if (!room.roomId) return
+        if (!room.roomId || !enableSend) return
 
-        if (shortcut === 'command+enter'
-            || shortcut === 'control+enter'
-            || shortcut === 'ctrl+enter'
-        ) {
+        if (shortcut === 'command+enter' || shortcut === 'ctrl+enter') {
             if (data.message || data.attachments.length) {
 
                 data.attachments.map(item => {
@@ -162,6 +160,18 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
         }
     }
 
+    useEffect(() => {
+        if(data.message && !data.attachments.length) setEnableSend(true)
+        if(!data.message && !data.attachments.length) setEnableSend(false)
+
+        if(data.attachments.length) {
+            if(data.attachments.some(file => file.progress !== 1))
+                setEnableSend(false)
+            else
+                setEnableSend(true)
+        }
+    }, [data])
+
     return (
         <div className={cn(style.chat_input)}>
 
@@ -180,7 +190,7 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
 
             <div>
                 <Hotkeys
-                    keyName="ctrl+enter, control+enter, command+enter"
+                    keyName="ctrl+enter, command+enter"
                     filter={(e) => {
                         if (e.key === 'Control'
                             || e.key === 'Command'
@@ -244,7 +254,6 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
                         content={
                             <>
                                 <p>You can send message via:</p>
-                                <p>&bull; "Control+Enter"</p>
                                 <p>&bull; "Command+Enter"</p>
                                 <p>&bull; "Ctrl+Enter"</p>
                             </>
@@ -253,7 +262,9 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
                 </div>
 
                 <div className={style.actions_send} onClick={() => sendMessage('ctrl+enter')}>
-                    <Icon icon={icons.Send} classIcon={style.actions_icon}/>
+                    <Icon icon={icons.Send} classIcon={cn(style.actions_icon, {
+                        [style.actions_icon__disable]: !enableSend
+                    })}/>
                 </div>
             </div>
         </div>
