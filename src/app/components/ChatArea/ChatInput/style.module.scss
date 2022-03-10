@@ -12,8 +12,11 @@
     grid-template-rows: auto 51px;
     position: relative;
 
-    &_wrapper {
-      position: relative;
+    &_files {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, 150px);
+      gap: 13px;
+      padding: 13px 13px 0 13px;
     }
 
     .actions {
@@ -63,8 +66,9 @@
 
     &_area {
       @include custom_scrollbar(4px, $slackColor);
-      font-size: 15px;
-      height: 100%;
+      font-size: 14px;
+      line-height: 16px;
+      height: fit-content;
       padding: 0 18px;
       max-height: 95px;
       color: $black;

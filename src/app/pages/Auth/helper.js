@@ -27,7 +27,6 @@ export const isValidEmail = (email) => {
 }
 
 export const validateAuthForm = (formData, type) => {
-    console.log(type)
     if (formData.email && !isValidEmail(formData.email)) {
         return errorMessage.invalidEmail
     }

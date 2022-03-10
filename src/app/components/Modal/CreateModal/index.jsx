@@ -96,7 +96,6 @@ const CreateModal = ({onConfirmAction, onCloseAction, headerName, data, setData,
                                     valueField="id"
                                     labelField="name"
                                     onChange={item => {
-                                        console.log(data)
                                         setData({
                                             ...data,
                                             previewURL: item.photoURL || "",

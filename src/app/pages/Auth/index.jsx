@@ -33,7 +33,6 @@ const Auth = () => {
             auth
                 .signInWithEmailAndPassword(data.email, data.password)
                 .then(({user}) => {
-                    console.log(user)
                     db
                         .users
                         .doc(user.uid)
@@ -56,7 +55,6 @@ const Auth = () => {
             auth
                 .createUserWithEmailAndPassword(data.email, data.password)
                 .then(({user}) => {
-                    console.log("from registration ",user)
                     db
                         .users
                         .doc(user.uid)

@@ -1,14 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react'
 import cn from "classnames"
 import Hotkeys from "react-hot-keys"
-import ReactTooltip from "react-tooltip"
-import {useId} from "react-id-generator"
+import {v4 as uuidV4} from "uuid"
 import {Picker} from 'emoji-mart'
 import {useAuthState} from "react-firebase-hooks/auth"
 
-import {auth, db} from "lib/firebase"
+import {auth, db, storage} from "lib/firebase"
 import Icon from "components/Icon"
 import Info from "components/Info"
+import ChatFile from "components/ChatArea/ChatFile"
 
 import style from './style.module.scss'
 import icons from "assets/svg"
@@ -38,6 +38,95 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
             ...data,
             message: data.message + emoji
         })
+    }
+
+    const handleUpload = (e) => {
+        const file = e.target.files[0]
+
+        const id = uuidV4()
+        const filePath = `/files/${user.uid}/messages_files/${file.name}`
+
+        setData({
+            ...data,
+            attachments: [
+                ...data.attachments,
+                {
+                    id: id,
+                    file: file,
+                    progress: 0,
+                    fileUrl: "",
+                    fullPath: "",
+                    error: false
+                }
+            ]
+        })
+
+        const uploadTask = storage
+            .ref(filePath)
+            .put(file)
+
+        uploadTask.on(
+            'state_changed',
+            snapshot => {
+                const progress = snapshot.bytesTransferred / snapshot.totalBytes
+
+                setData(prevData => {
+                    return {
+                        ...prevData,
+                        attachments: prevData.attachments.map(item => {
+                            return item.id === id ? {...item, progress: progress} : item
+                        })
+                    }
+                })
+            },
+            () => {
+                setData(prevData => {
+                    return {
+                        ...prevData,
+                        attachments: prevData.attachments.map(item => {
+                            return item.id === id ? {...item, error: true} : item
+                        })
+                    }
+                })
+            },
+            () => {
+                uploadTask
+                    .snapshot.ref
+                    .getDownloadURL()
+                    .then((url) => {
+
+                        setData({
+                            ...data,
+                            attachments: [
+                                ...data.attachments,
+                                {
+                                    id: id,
+                                    file: file,
+                                    fileUrl: url,
+                                    progress: 1,
+                                    fullPath: filePath
+                                }
+                            ]
+                        })
+                    })
+            }
+        )
+    }
+
+    const removeFile = (file) => {
+        storage
+            .ref(file.fullPath)
+            .delete()
+            .then(() => {
+                setData(prevData => {
+                    return {
+                        ...prevData,
+                        attachments: prevData.attachments.filter(item => {
+                            return item.id !== file.id && item
+                        })
+                    }
+                })
+            })
     }
 
     const sendMessage = (shortcut) => {
@@ -86,7 +175,7 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
                 />
             )}
 
-            <div className={style.chat_input_wrapper}>
+            <div>
                 <Hotkeys
                     keyName="ctrl+enter, control+enter, command+enter"
                     filter={(e) => {
@@ -116,6 +205,16 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
                         })}
                     />
                 </Hotkeys>
+                {data.attachments.length > 0 &&
+                <div className={style.chat_input_files}>
+                    {data.attachments?.map(file => {
+                            return (
+                                <ChatFile key={file.id} file={file} removeFile={removeFile}/>
+                            )
+                        }
+                    )}
+                </div>
+                }
             </div>
 
             <div className={style.actions_wrapper}>
@@ -125,13 +224,18 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
                         {/*    keyName="Escape"*/}
                         {/*    onKeyDown={() => setShowEmoji(false)}*/}
                         {/*>*/}
-                            <Icon icon={icons.Smile} classIcon={cn(style.actions_icon, style.actions_icon__nostroke)}/>
+                        <Icon icon={icons.Smile} classIcon={cn(style.actions_icon, style.actions_icon__nostroke)}/>
                         {/*</Hotkeys>*/}
                     </div>
 
-                    <div>
+                    <label>
                         <Icon icon={icons.Attachment} classIcon={style.actions_icon}/>
-                    </div>
+                        <input
+                            type="file"
+                            onChange={handleUpload}
+                            style={{opacity: 0, position: "absolute", left: "-9999px"}}
+                        />
+                    </label>
 
                     <Info
                         content={

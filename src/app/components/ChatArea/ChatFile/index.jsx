@@ -1,6 +1,5 @@
 import React from 'react'
 import cn from "classnames"
-import {useId} from "react-id-generator"
 import {Oval} from "react-loader-spinner"
 
 import {getFileName} from "lib/helpers"
@@ -10,22 +9,23 @@ import style from './style.module.scss'
 import icons from "assets/svg"
 
 const ChatFile = ({file, removeFile}) => {
-
     return (
         <div
-            key={useId()}
-            className={cn(style.uploaded_file, {[style.uploaded_file__done]: file.progress === 1})}
+            className={cn(style.uploaded_file, {
+                [style.uploaded_file__done]: file.progress === 1
+            })}
         >
-            <p>
-                {getFileName(file.name, 13)}
-            </p>
+            <a href={file.fileUrl || '#'} target='_blank' rel='noopener noreferrer'>
+                {getFileName(file.file.name, 9)}
+            </a>
+
             {file.progress === 1
                 ? <Icon
                     icon={icons.Delete}
                     classIcon={style.icon_delete}
                     onClick={() => removeFile(file)}
                 />
-                : <Oval color="#3f0f40" height={20} width={20}/>
+                : <Oval color="#3f0f40" height={14} width={14}/>
             }
         </div>
     )
