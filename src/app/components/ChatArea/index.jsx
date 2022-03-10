@@ -83,7 +83,7 @@ const ChatArea = () => {
                         <div className={style.chat_messages}>
 
                             {roomMessages?.docs.map((doc) => (
-                                <div/>
+                                <div key={doc.id}/>
                                 // <Message
                                 //     key={doc.id}
                                 //     message={doc.data().message}
@@ -97,6 +97,7 @@ const ChatArea = () => {
                         </div>
 
                         <ChatInput
+                            collection={queryRef.current}
                             queryRef={queryRef?.current}
                             bottomRef={bottomRef}
                             channelName={roomDetails?.data().name}

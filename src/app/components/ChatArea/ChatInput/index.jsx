@@ -27,7 +27,6 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
     const [showEmoji, setShowEmoji] = useState(false)
     const [data, setData] = useState(DEFAULT_DATA)
 
-
     const onEmojiClick = (e) => {
         let sym = e.unified.split('-')
         let codesArray = []
@@ -52,6 +51,7 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
                 ...data.attachments,
                 {
                     id: id,
+                    name: file.name,
                     file: file,
                     progress: 0,
                     fileUrl: "",
@@ -101,6 +101,7 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
                                 ...data.attachments,
                                 {
                                     id: id,
+                                    name: file.name,
                                     file: file,
                                     fileUrl: url,
                                     progress: 1,
@@ -136,26 +137,28 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
             || shortcut === 'control+enter'
             || shortcut === 'ctrl+enter'
         ) {
-            if ((!data.message && !data.attachments) || !data.message) {
-                console.log("no data")
-                return
-            }
+            if (data.message || data.attachments.length) {
 
-            console.log(data)
-            // collection
-            //     .add({
-            //         message: data.message,
-            //         replies: [],
-            //         attachments: data.attachments,
-            //         reactions: [],
-            //         timestamp: db.getCurrentTimestamp(),
-            //         user: user?.displayName,
-            //         userImage: user?.photoURL || ""
-            //     })
-            //     .then(() => {
-            //         bottomRef?.current?.scrollIntoView({behavior: "smooth"})
-            //     })
-            setData(DEFAULT_DATA)
+                data.attachments.map(item => {
+                    delete item.file
+                    delete item.progress
+                })
+
+                collection
+                    .add({
+                        message: data.message,
+                        attachments: data.attachments,
+                        reactions: [],
+                        replies: [],
+                        timestamp: db.getCurrentTimestamp,
+                        user: user?.displayName,
+                        userImage: user?.photoURL || ""
+                    })
+                    .then(() => {
+                        bottomRef?.current?.scrollIntoView({behavior: "smooth"})
+                    })
+                setData(DEFAULT_DATA)
+            }
         }
     }
 

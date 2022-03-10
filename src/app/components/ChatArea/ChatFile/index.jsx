@@ -16,7 +16,7 @@ const ChatFile = ({file, removeFile}) => {
             })}
         >
             <a href={file.fileUrl || '#'} target='_blank' rel='noopener noreferrer'>
-                {getFileName(file.file.name, 9)}
+                {getFileName(file.name, 9)}
             </a>
 
             {file.progress === 1
