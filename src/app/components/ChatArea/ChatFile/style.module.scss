@@ -1,0 +1,44 @@
+@import "styles/palette";
+
+.uploaded_file {
+  padding: 6px 13px;
+  font-size: 16px;
+  max-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  border: 1px solid $slackColor;
+  color: $black;
+
+  &__done {
+    color: $pale;
+    background-color: $slackLight;
+  }
+
+  &:not(:first-child) {
+    margin-left: 10px;
+  }
+
+  .icon_delete {
+    fill: $pale;
+    cursor: pointer;
+
+    &:hover {
+      fill: $red;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

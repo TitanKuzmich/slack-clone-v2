@@ -22,17 +22,12 @@ import icons from "assets/svg"
 const DEFAULT_DATA = {
     message: "",
     attachments: []
-
 }
 
 const ChatInput = ({collection, channelName, room, bottomRef, setRowsCount}) => {
     const [user] = useAuthState(auth)
     const textAreaRef = useRef(null)
-    const [htmlId] = useId()
 
-    const tooltipId = `send-tooltip-${htmlId}`
-
-    const [mouseOver, setMouseOver] = useState(true)
     const [showEmoji, setShowEmoji] = useState(false)
     const [data, setData] = useState(DEFAULT_DATA)
 
@@ -45,18 +40,18 @@ const ChatInput = ({collection, channelName, room, bottomRef, setRowsCount}) => 
 
         setData({
             ...data,
-            message: value + emoji
+            message: data.message + emoji
         })
     }
 
     const sendMessage = (shortcut) => {
         if (!room.roomId) return
 
-        if(shortcut === 'command+enter'
+        if (shortcut === 'command+enter'
             || shortcut === 'control+enter'
             || shortcut === 'ctrl+enter'
         ) {
-            if((!data.message && !data.attachments) || !data.message) {
+            if ((!data.message && !data.attachments) || !data.message) {
                 console.log("no data")
                 return
             }
@@ -80,38 +75,40 @@ const ChatInput = ({collection, channelName, room, bottomRef, setRowsCount}) => 
     }
 
     useEffect(() => {
-        setRowsCount(textAreaRef?.current?.value.split("\n").length)
+        setRowsCount(textAreaRef?.current?.value.split(/\n/gm).length)
     }, [textAreaRef?.current?.value.split("\n").length])
 
     return (
-        <div className={style.chat_input}>
+        <div className={cn(style.chat_input)}>
+
+            {showEmoji && (
+                <Picker
+                    emoji="point_up"
+                    style={{
+                        transformOrigin: "left bottom",
+                        position: "absolute",
+                        bottom: "74px",
+                        left: "20px",
+                    }}
+                    onSelect={onEmojiClick}
+                />
+            )}
+
             <div
+                className={style.chat_input_wrapper}
                 style={{
-                    maxHeight: `${textAreaRef?.current?.value.split("\n").length <= MAX_ROWS_COUNT
+                    maxHeight: `${textAreaRef?.current?.value.split(/\n/gm).length <= MAX_ROWS_COUNT
                         ? (
-                            textAreaRef?.current?.value.split("\n").length === MIN_ROWS_COUNT
+                            textAreaRef?.current?.value.split(/\n/gm).length === MIN_ROWS_COUNT
                                 ? CALCULATED_TEXT_AREA_HEIGHT
-                                : textAreaRef?.current?.scrollHeight
+                                : CALCULATED_TEXT_AREA_HEIGHT * textAreaRef?.current?.value.split(/\n/gm).length
                         ) : MAX_TEXT_AREA_HEIGHT}px`
                 }}
             >
-                {showEmoji && (
-                    <Picker
-                        emoji="point_up"
-                        style={{
-                            transformOrigin: "left bottom",
-                            position: "absolute",
-                            bottom: "74",
-                            left: "20px",
-                        }}
-                        onSelect={onEmojiClick}
-                    />
-                )}
-
                 <Hotkeys
                     keyName="ctrl+enter, control+enter, command+enter"
                     filter={(e) => {
-                        if(e.key === 'Control'
+                        if (e.key === 'Control'
                             || e.key === 'Command'
                             || e.key === 'Ctrl'
                         ) {
@@ -124,7 +121,7 @@ const ChatInput = ({collection, channelName, room, bottomRef, setRowsCount}) => 
                     <textarea
                         ref={textAreaRef}
                         rows={
-                            textAreaRef?.current?.value.split("\n").length <= MAX_ROWS_COUNT
+                            textAreaRef?.current?.value.split(/\r|\n/ig).length <= MAX_ROWS_COUNT
                                 ? textAreaRef?.current?.value.split("\n").length
                                 : MAX_ROWS_COUNT
                         }
@@ -142,15 +139,22 @@ const ChatInput = ({collection, channelName, room, bottomRef, setRowsCount}) => 
             <div className={style.actions_wrapper}>
                 <div className={style.actions_attachments}>
                     <div onClick={() => setShowEmoji(!showEmoji)}>
-                        <Icon icon={icons.Smile} classIcon={cn(style.actions_icon, style.actions_icon__nostroke)}/>
+                        {/*<Hotkeys*/}
+                        {/*    keyName="Escape"*/}
+                        {/*    onKeyDown={() => setShowEmoji(false)}*/}
+                        {/*>*/}
+                            <Icon icon={icons.Smile} classIcon={cn(style.actions_icon, style.actions_icon__nostroke)}/>
+                        {/*</Hotkeys>*/}
                     </div>
+
                     <div>
                         <Icon icon={icons.Attachment} classIcon={style.actions_icon}/>
                     </div>
+
                     <Info
                         content={
                             <>
-                                <p>You can send message via: </p>
+                                <p>You can send message via:</p>
                                 <p>&bull; "Control+Enter"</p>
                                 <p>&bull; "Command+Enter"</p>
                                 <p>&bull; "Ctrl+Enter"</p>

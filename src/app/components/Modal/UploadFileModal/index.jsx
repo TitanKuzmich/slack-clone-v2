@@ -5,17 +5,14 @@ import nextId from "react-id-generator"
 import {Oval} from "react-loader-spinner"
 import {useAuthState} from "react-firebase-hooks/auth"
 
-import {ROOT_FOLDER} from "state/reducers/channels"
 import {auth, db, storage} from "lib/firebase"
 import Modal from "components/Modal"
 import Icon from "components/Icon"
-import {getFileName} from "components/Folders/File/helper"
 
 import style from '../style.module.scss'
 import icons from "assets/svg"
 
 const UploadFileModal = ({
-                             currentFolder,
                              data,
                              setData,
                              setConfirmUpload,
