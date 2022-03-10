@@ -18,7 +18,8 @@ const ChatArea = () => {
     const {room} = useSelector((state) => state.app)
 
     const queryRef = useRef(null)
-    const inputRef = useRef(null)
+
+    const [inputHeight, setInputHeight] = useState(0)
 
     const [roomDetails] = useDocument(
         room.channels && room.roomId && db.channels.doc(room.roomId)
@@ -83,16 +84,10 @@ const ChatArea = () => {
                     </div>
                     <div
                         className={style.chat_container}
-                        // style={{
-                        //     minHeight: `calc(100% - ${inputRef?.current?.height}px)`
-                        // }}
                     >
                         <div
                             className={style.chat_messages}
-                            style={{
-                                height: `calc(100vh - 149.5px - 85px)`
-                                // height: `calc(100vh - ${inputRef?.current?.style.scrollHeight}px)`
-                            }}
+                            style={{maxHeight: `calc(100vh - ${inputHeight + 1.5}px - 190.5px)`}}
                         >
 
                             {roomMessages?.docs.map((doc) => (
@@ -106,16 +101,16 @@ const ChatArea = () => {
 
                             <div ref={bottomRef}/>
                         </div>
-                    </div>
 
                     <ChatInput
                         collection={queryRef.current}
                         queryRef={queryRef?.current}
-                        inputRef={inputRef?.current}
                         bottomRef={bottomRef}
                         channelName={roomDetails?.data().name}
                         room={room}
+                        setInputHeight={setInputHeight}
                     />
+                    </div>
                 </div>
             ) : (
                 <div className={cn(style.chat_wrapper, style.chat_wrapper__empty)}>

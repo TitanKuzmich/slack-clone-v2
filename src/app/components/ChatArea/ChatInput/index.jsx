@@ -20,9 +20,10 @@ const DEFAULT_DATA = {
 
 const MAX_ROWS_COUNT = 5
 
-const ChatInput = ({collection, channelName, room, bottomRef, inputRef}) => {
+const ChatInput = ({collection, channelName, room, bottomRef, setInputHeight}) => {
     const [user] = useAuthState(auth)
     const textAreaRef = useRef(null)
+    const inputRef = useRef(null)
 
     const [showEmoji, setShowEmoji] = useState(false)
     const [enableSend, setEnableSend] = useState(false)
@@ -172,6 +173,11 @@ const ChatInput = ({collection, channelName, room, bottomRef, inputRef}) => {
                 setEnableSend(true)
         }
     }, [data])
+
+    useEffect(() => {
+        console.log(inputRef?.current?.clientHeight)
+        setInputHeight(inputRef?.current?.clientHeight)
+    }, [textAreaRef?.current?.clientHeight, inputRef?.current?.clientHeight, data])
 
     return (
         <div className={cn(style.chat_input)} ref={inputRef}>

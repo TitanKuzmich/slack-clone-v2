@@ -84,17 +84,20 @@
 
 @mixin custom_scrollbar($width, $color) {
   &::-webkit-scrollbar {
+    z-index: 10;
     width: $width;
     right: 2px;
   }
 
   /* Track */
   &::-webkit-scrollbar-track {
+    z-index: 10;
     border-radius: 3px;
   }
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
+    z-index: 10;
     background: $color;
     border-radius: 3px;
     outline: 1px solid $slackColor;
