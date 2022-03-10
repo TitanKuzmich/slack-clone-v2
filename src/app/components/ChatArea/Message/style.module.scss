@@ -1,0 +1,148 @@
+@import "styles/palette";
+
+.message{
+  &_container {
+    position: relative;
+    padding: 13px 20px;
+    transition: all .15s ease;
+
+    &:hover {
+      background: $grey;
+    }
+  }
+
+  &_actions {
+    position: absolute;
+    top: 11px;
+    right: 13px;
+    display: grid;
+    grid-auto-flow:column;
+    grid-template-columns: repeat(auto-fit, 21px);
+    grid-template-rows: 21px;
+    grid-column-gap: 3px;
+  }
+
+  &_icon {
+    &_wrapper {
+      display: grid;
+      place-items: center;
+    }
+
+    cursor: pointer;
+    fill: $black;
+    stroke: $black;
+    width: 18px;
+    height: 18px;
+    transition: all .15s ease;
+
+    &:hover {
+      fill: $slackColor;
+      stroke: $slackColor;
+    }
+
+    &__nostroke {
+      stroke: none;
+
+      &:hover {
+        stroke: none;
+      }
+    }
+  }
+
+  &_header {
+    grid-template-columns: 20px 1fr;
+
+    h3 {
+      color: $black;
+      font-size: 14px;
+    }
+
+    img, div {
+      width: 20px;
+      height: 20px;
+    }
+
+    div {
+      background-color: $slackColor;
+      border: 1px solid $slackColor;
+      font-size: 12px;
+    }
+  }
+
+  &_time {
+    margin-left: 28px;
+    color: $greyDark;
+    font-size: 12px;
+  }
+
+  &_data {
+    display: block;
+    margin: 6px 0 0 28px;
+    font-size: 14px;
+    color: $black;
+  }
+
+  &_files {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 130px);
+    gap: 13px;
+    margin: 13px 0 0 28px;
+  }
+
+  &_reaction {
+    &_wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, 24px);
+      grid-column-gap: 3px;
+      margin: 0 6px 28px 0;
+    }
+
+    width: 20px;
+    height: 20px;
+    position: relative;
+
+    &_count {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      border: 1px solid $greyDark;
+      border-radius: 100%;
+      background: $greyLight;
+      font-size: 8px;
+      transition: all .15s ease;
+    }
+
+    &:hover {
+      &_count {
+        background: $greyDark;
+      }
+    }
+  }
+
+  &_reply_wrapper {
+    margin-left: 28px;
+    border: 1px solid $greyDark;
+    border-radius: 6px;
+    color: $black;
+    padding: 3px 6px;
+    transition: all .15s ease;
+
+    &:hover {
+      color: $slackColor;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

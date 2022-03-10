@@ -15,7 +15,7 @@
   &_container {
     display: flex;
     flex-direction: column;
-    min-height: calc(100% - 79.5px);
+    //min-height: calc(100% - 85.5px);
   }
 
   &_header {
@@ -72,7 +72,12 @@
 
   &_messages {
     flex: 1;
-    overflow-y: scroll;
+    width: 90%;
+    margin: 13px auto 0 auto;
+    background: $white;
+    border: 1px solid $slackBorder;
+    border-radius: 6px;
+    overflow-y: auto;
     @include custom_scrollbar(4px, $greyLight);
   }
 }

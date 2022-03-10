@@ -20,7 +20,7 @@ const DEFAULT_DATA = {
 
 const MAX_ROWS_COUNT = 5
 
-const ChatInput = ({collection, channelName, room, bottomRef}) => {
+const ChatInput = ({collection, channelName, room, bottomRef, inputRef}) => {
     const [user] = useAuthState(auth)
     const textAreaRef = useRef(null)
 
@@ -149,6 +149,7 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
                         reactions: [],
                         replies: [],
                         timestamp: db.getCurrentTimestamp,
+                        userId: user.uid,
                         user: user?.displayName,
                         userImage: user?.photoURL || ""
                     })
@@ -173,7 +174,7 @@ const ChatInput = ({collection, channelName, room, bottomRef}) => {
     }, [data])
 
     return (
-        <div className={cn(style.chat_input)}>
+        <div className={cn(style.chat_input)} ref={inputRef}>
 
             {showEmoji && (
                 <Picker

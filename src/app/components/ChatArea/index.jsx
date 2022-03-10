@@ -7,6 +7,7 @@ import {Oval} from "react-loader-spinner"
 import {db} from "lib/firebase"
 import Icon from "components/Icon"
 import TitleWithAvatar from "components/TitleWithAvatar"
+import Message from "components/ChatArea/Message"
 import ChatInput from "components/ChatArea/ChatInput"
 
 import style from './style.module.scss'
@@ -17,6 +18,7 @@ const ChatArea = () => {
     const {room} = useSelector((state) => state.app)
 
     const queryRef = useRef(null)
+    const inputRef = useRef(null)
 
     const [roomDetails] = useDocument(
         room.channels && room.roomId && db.channels.doc(room.roomId)
@@ -45,7 +47,7 @@ const ChatArea = () => {
             : db.directs.doc(room.roomId).collection('messages')
     }, [room.roomId, room.channels])
 
-    if (!roomMessages && !roomDetails) {
+    if (!roomMessages && !roomDetails && !loading) {
         return (
             <div className={cn(style.chat_wrapper, style.chat_wrapper__empty)}>
                 Choose any chat.
@@ -79,31 +81,41 @@ const ChatArea = () => {
                             <p>Details</p>
                         </div>
                     </div>
-                    <div className={style.chat_container}>
-                        <div className={style.chat_messages}>
+                    <div
+                        className={style.chat_container}
+                        // style={{
+                        //     minHeight: `calc(100% - ${inputRef?.current?.height}px)`
+                        // }}
+                    >
+                        <div
+                            className={style.chat_messages}
+                            style={{
+                                height: `calc(100vh - 149.5px - 85px)`
+                                // height: `calc(100vh - ${inputRef?.current?.style.scrollHeight}px)`
+                            }}
+                        >
 
                             {roomMessages?.docs.map((doc) => (
-                                <div key={doc.id}/>
-                                // <Message
-                                //     key={doc.id}
-                                //     message={doc.data().message}
-                                //     timestamp={doc.data().timestamp}
-                                //     user={doc.data().user}
-                                //     userImage={doc.data().userImage}
-                                // />
+                                <Message
+                                    key={doc.id}
+                                    message={doc.data()}
+                                    deleteMessage={() => {
+                                    }}
+                                />
                             ))}
 
                             <div ref={bottomRef}/>
                         </div>
-
-                        <ChatInput
-                            collection={queryRef.current}
-                            queryRef={queryRef?.current}
-                            bottomRef={bottomRef}
-                            channelName={roomDetails?.data().name}
-                            room={room}
-                        />
                     </div>
+
+                    <ChatInput
+                        collection={queryRef.current}
+                        queryRef={queryRef?.current}
+                        inputRef={inputRef?.current}
+                        bottomRef={bottomRef}
+                        channelName={roomDetails?.data().name}
+                        room={room}
+                    />
                 </div>
             ) : (
                 <div className={cn(style.chat_wrapper, style.chat_wrapper__empty)}>
