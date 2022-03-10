@@ -9,12 +9,6 @@ import {useAuthState} from "react-firebase-hooks/auth"
 import {auth, db} from "lib/firebase"
 import Icon from "components/Icon"
 import Info from "components/Info"
-import {
-    CALCULATED_TEXT_AREA_HEIGHT,
-    MAX_ROWS_COUNT,
-    MAX_TEXT_AREA_HEIGHT,
-    MIN_ROWS_COUNT
-} from "components/ChatArea/helper"
 
 import style from './style.module.scss'
 import icons from "assets/svg"
@@ -24,7 +18,9 @@ const DEFAULT_DATA = {
     attachments: []
 }
 
-const ChatInput = ({collection, channelName, room, bottomRef, setRowsCount}) => {
+const MAX_ROWS_COUNT = 5
+
+const ChatInput = ({collection, channelName, room, bottomRef}) => {
     const [user] = useAuthState(auth)
     const textAreaRef = useRef(null)
 
@@ -74,10 +70,6 @@ const ChatInput = ({collection, channelName, room, bottomRef, setRowsCount}) => 
         }
     }
 
-    useEffect(() => {
-        setRowsCount(textAreaRef?.current?.value.split(/\n/gm).length)
-    }, [textAreaRef?.current?.value.split("\n").length])
-
     return (
         <div className={cn(style.chat_input)}>
 
@@ -94,17 +86,7 @@ const ChatInput = ({collection, channelName, room, bottomRef, setRowsCount}) => 
                 />
             )}
 
-            <div
-                className={style.chat_input_wrapper}
-                style={{
-                    maxHeight: `${textAreaRef?.current?.value.split(/\n/gm).length <= MAX_ROWS_COUNT
-                        ? (
-                            textAreaRef?.current?.value.split(/\n/gm).length === MIN_ROWS_COUNT
-                                ? CALCULATED_TEXT_AREA_HEIGHT
-                                : CALCULATED_TEXT_AREA_HEIGHT * textAreaRef?.current?.value.split(/\n/gm).length
-                        ) : MAX_TEXT_AREA_HEIGHT}px`
-                }}
-            >
+            <div className={style.chat_input_wrapper}>
                 <Hotkeys
                     keyName="ctrl+enter, control+enter, command+enter"
                     filter={(e) => {

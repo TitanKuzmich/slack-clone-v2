@@ -8,12 +8,6 @@ import {db} from "lib/firebase"
 import Icon from "components/Icon"
 import TitleWithAvatar from "components/TitleWithAvatar"
 import ChatInput from "components/ChatArea/ChatInput"
-import {
-    CALCULATED_TEXT_AREA_HEIGHT,
-    MAX_ROWS_COUNT,
-    MAX_TEXT_AREA_HEIGHT,
-    MIN_ROWS_COUNT
-} from "components/ChatArea/helper"
 
 import style from './style.module.scss'
 import icons from "assets/svg"
@@ -21,8 +15,6 @@ import icons from "assets/svg"
 const ChatArea = () => {
     const bottomRef = useRef(null)
     const {room} = useSelector((state) => state.app)
-
-    const [rowsCount, setRowsCount] = useState(1)
 
     const queryRef = useRef(null)
 
@@ -88,17 +80,7 @@ const ChatArea = () => {
                         </div>
                     </div>
                     <div className={style.chat_container}>
-                        <div
-                            className={style.chat_messages}
-                            style={{
-                                height: rowsCount <= MAX_ROWS_COUNT
-                                    ? (
-                                        rowsCount === MIN_ROWS_COUNT
-                                            ? 'calc(100vh - 260.5px)'
-                                            : `calc(100vh - 241.5px - ${CALCULATED_TEXT_AREA_HEIGHT * rowsCount}px)`
-                                    ) : `calc(100vh - 241.5px - ${MAX_TEXT_AREA_HEIGHT}px`
-                            }}
-                        >
+                        <div className={style.chat_messages}>
 
                             {roomMessages?.docs.map((doc) => (
                                 <div/>
@@ -117,7 +99,6 @@ const ChatArea = () => {
                         <ChatInput
                             queryRef={queryRef?.current}
                             bottomRef={bottomRef}
-                            setRowsCount={setRowsCount}
                             channelName={roomDetails?.data().name}
                             room={room}
                         />
