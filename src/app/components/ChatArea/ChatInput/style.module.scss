@@ -25,9 +25,46 @@
       &_attachments {
         display: grid;
         place-items: center;
-        grid-template-columns: 24px 24px;
+        grid-template-columns: 24px 24px 24px;
         grid-template-rows: 24px;
         grid-column-gap: 13px;
+
+        .tooltip {
+
+          &_wrapper {
+            position: relative;
+          }
+
+          position: absolute;
+          top: -5px;
+          left: 0;
+          border-radius: 6px !important;
+          background: $slackColor !important;
+          padding: 0 !important;
+          margin-top: -10px !important;
+
+          &.leftRightPosition {
+            &::after {
+              border-left: 8px solid transparent !important;
+              border-right: 8px solid transparent !important;
+            }
+          }
+
+          &_content {
+            font-weight: normal;
+            font-size: 11px;
+            line-height: 14px !important;
+            letter-spacing: 0.4px;
+            color: $white;
+            width: 256px;
+            padding: 8px;
+
+            p {
+              line-height: 14px !important;
+              font-size: 11px !important;
+            }
+          }
+        }
       }
 
       &_send {
@@ -46,13 +83,13 @@
           fill: $slackColor;
           stroke: $slackColor;
         }
-      }
 
-      .emoji_icon {
-        stroke: none;
-
-        &:hover {
+        &__nostroke {
           stroke: none;
+
+          &:hover {
+            stroke: none;
+          }
         }
       }
     }

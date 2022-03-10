@@ -119,7 +119,7 @@ const ChatArea = () => {
                             bottomRef={bottomRef}
                             setRowsCount={setRowsCount}
                             channelName={roomDetails?.data().name}
-                            roomId={room.roomId}
+                            room={room}
                         />
                     </div>
                 </div>

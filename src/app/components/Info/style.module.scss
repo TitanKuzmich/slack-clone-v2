@@ -1,0 +1,51 @@
+@import "styles/palette";
+
+.info_wrapper {
+  display: inline-block;
+}
+
+.tooltip {
+  border-radius: 6px !important;
+  background: $slackColor !important;
+  padding: 0 !important;
+  margin-top: -4px !important;
+
+  &.left_right_position {
+    &::after {
+      border-top: 8px solid transparent !important;
+      border-bottom: 8px solid transparent !important;
+      margin-top: -7.5px !important;
+    }
+  }
+}
+
+.info_icon {
+  cursor: pointer;
+  fill: $black;
+  width: 24px;
+  height: 24px;
+  transition: all .15s ease;
+
+  &:hover {
+    fill: $slackColor;
+  }
+}
+
+.content {
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px !important;
+  letter-spacing: 0.4px;
+  color: $white;
+  width: 170px;
+  padding: 8px;
+
+  p {
+    line-height: 14px !important;
+    font-size: 11px !important;
+  }
+}
+
+.bottom_position {
+  margin-top: 4px !important;
+}
