@@ -96,12 +96,16 @@ const ChatArea = () => {
                     >
                         <div
                             className={style.chat_messages}
-                            style={{maxHeight: `calc(100vh - ${inputHeight + 1.5}px - 190.5px)`}}
+                            style={{
+                                minHeight: `calc(100vh - ${inputHeight + 1.5}px - 190.5px)`,
+                                maxHeight: `calc(100vh - ${inputHeight + 1.5}px - 190.5px)`
+                            }}
                         >
 
                             {roomMessages?.docs.map((doc) => (
                                 <Message
                                     key={doc.id}
+                                    collection={queryRef.current}
                                     message={db.formatDoc(doc)}
                                     deleteMessage={onMessageDelete}
                                 />
@@ -112,7 +116,6 @@ const ChatArea = () => {
 
                     <ChatInput
                         collection={queryRef.current}
-                        queryRef={queryRef?.current}
                         bottomRef={bottomRef}
                         channelName={roomDetails?.data().name}
                         room={room}

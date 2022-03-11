@@ -22,6 +22,7 @@ const MAX_ROWS_COUNT = 5
 
 const ChatInput = ({collection, channelName, room, bottomRef, setInputHeight}) => {
     const [user] = useAuthState(auth)
+    const emojiContainerRef = useRef(null)
     const textAreaRef = useRef(null)
     const inputRef = useRef(null)
 
@@ -163,11 +164,11 @@ const ChatInput = ({collection, channelName, room, bottomRef, setInputHeight}) =
     }
 
     useEffect(() => {
-        if(data.message && !data.attachments.length) setEnableSend(true)
-        if(!data.message && !data.attachments.length) setEnableSend(false)
+        if (data.message && !data.attachments.length) setEnableSend(true)
+        if (!data.message && !data.attachments.length) setEnableSend(false)
 
-        if(data.attachments.length) {
-            if(data.attachments.some(file => file.progress !== 1))
+        if (data.attachments.length) {
+            if (data.attachments.some(file => file.progress !== 1))
                 setEnableSend(false)
             else
                 setEnableSend(true)
@@ -178,20 +179,25 @@ const ChatInput = ({collection, channelName, room, bottomRef, setInputHeight}) =
         setInputHeight(inputRef?.current?.clientHeight)
     }, [textAreaRef?.current?.clientHeight, inputRef?.current?.clientHeight, data])
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (emojiContainerRef?.current && !emojiContainerRef?.current.contains(event.target)) setShowEmoji(false)
+        }
+
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [emojiContainerRef])
+
     return (
         <div className={cn(style.chat_input)} ref={inputRef}>
 
             {showEmoji && (
-                <Picker
-                    emoji="point_up"
-                    style={{
-                        transformOrigin: "left bottom",
-                        position: "absolute",
-                        bottom: "74px",
-                        left: "20px",
-                    }}
-                    onSelect={onEmojiClick}
-                />
+                <div ref={emojiContainerRef} className={style.emoji_container}>
+                    <Picker
+                        emoji="point_up"
+                        onSelect={onEmojiClick}
+                    />
+                </div>
             )}
 
             <div>
@@ -238,13 +244,13 @@ const ChatInput = ({collection, channelName, room, bottomRef, setInputHeight}) =
 
             <div className={style.actions_wrapper}>
                 <div className={style.actions_attachments}>
-                    <div onClick={() => setShowEmoji(!showEmoji)}>
-                        {/*<Hotkeys*/}
-                        {/*    keyName="Escape"*/}
-                        {/*    onKeyDown={() => setShowEmoji(false)}*/}
-                        {/*>*/}
-                        <Icon icon={icons.Smile} classIcon={cn(style.actions_icon, style.actions_icon__nostroke)}/>
-                        {/*</Hotkeys>*/}
+                    <div className={cn({[style.emoji_icon]: showEmoji})}>
+                        <div className={cn({[style.emoji_icon_layer]: showEmoji})}/>
+                        <Icon
+                            icon={icons.Smile}
+                            classIcon={cn(style.actions_icon, style.actions_icon__nostroke)}
+                            onClick={() => setShowEmoji(!showEmoji)}
+                        />
                     </div>
 
                     <label>
