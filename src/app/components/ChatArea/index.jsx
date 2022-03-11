@@ -38,6 +38,15 @@ const ChatArea = () => {
             .orderBy('timestamp', 'asc')
     )
 
+    const onMessageDelete = (messageId) => {
+        db
+            .directs
+            .doc(room.roomId)
+            .collection('messages')
+            .doc(messageId)
+            .delete()
+    }
+
     useEffect(() => {
         bottomRef?.current?.scrollIntoView({behavior: "smooth"})
     }, [room.roomId, loading])
@@ -93,13 +102,12 @@ const ChatArea = () => {
                             {roomMessages?.docs.map((doc) => (
                                 <Message
                                     key={doc.id}
-                                    message={doc.data()}
-                                    deleteMessage={() => {
-                                    }}
+                                    message={db.formatDoc(doc)}
+                                    deleteMessage={onMessageDelete}
                                 />
                             ))}
 
-                            <div ref={bottomRef}/>
+                            <div className={style.chat_bottom} ref={bottomRef}/>
                         </div>
 
                     <ChatInput

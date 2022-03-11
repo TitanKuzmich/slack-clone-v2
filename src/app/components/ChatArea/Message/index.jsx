@@ -13,41 +13,27 @@ import icons from "assets/svg"
 
 const Message = ({message, deleteMessage}) => {
     const [user] = useAuthState(auth)
-    const [mouseOver, setMouseOver] = useState(true)
 
     return (
-        <div
-            className={style.message_container}
-            onFocus={() => setMouseOver(true)}
-            onMouseOver={() => setMouseOver(true)}
-            onMouseOut={() => setMouseOver(false)}
-        >
-
-            {/*{mouseOver && (*/}
-                <div
-                    className={style.message_actions}
-                    onFocus={() => setMouseOver(true)}
-                    onMouseOver={() => setMouseOver(true)}
-                    onMouseOut={() => setMouseOver(false)}
-                >
-                    <div className={style.message_icon_wrapper}>
-                        <Icon icon={icons.AddReaction}
-                              classIcon={cn(style.message_icon, style.message_icon__nostroke)}/>
-                    </div>
-                    <div className={style.message_icon_wrapper}>
-                        <Icon icon={icons.Thread} classIcon={style.message_icon}/>
-                    </div>
-                    {user.uid === message.userId && (
-                        <div className={style.message_icon_wrapper}>
-                            <Icon
-                                icon={icons.Delete}
-                                classIcon={cn(style.message_icon, style.message_icon__nostroke)}
-                                onClick={() => deleteMessage(message.id)}
-                            />
-                        </div>
-                    )}
+        <div className={style.message_container}>
+            <div className={style.message_actions}>
+                <div className={style.message_icon_wrapper}>
+                    <Icon icon={icons.AddReaction}
+                          classIcon={cn(style.message_icon, style.message_icon__nostroke)}/>
                 </div>
-            {/*)}*/}
+                <div className={style.message_icon_wrapper}>
+                    <Icon icon={icons.Thread} classIcon={style.message_icon}/>
+                </div>
+                {user.uid === message.userId && (
+                    <div className={style.message_icon_wrapper}>
+                        <Icon
+                            icon={icons.Delete}
+                            classIcon={cn(style.message_icon, style.message_icon__nostroke)}
+                            onClick={() => deleteMessage(message.id)}
+                        />
+                    </div>
+                )}
+            </div>
 
             <TitleWithAvatar.TitleWithAvatarWrap
                 className={style.message_header}

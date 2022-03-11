@@ -175,7 +175,6 @@ const ChatInput = ({collection, channelName, room, bottomRef, setInputHeight}) =
     }, [data])
 
     useEffect(() => {
-        console.log(inputRef?.current?.clientHeight)
         setInputHeight(inputRef?.current?.clientHeight)
     }, [textAreaRef?.current?.clientHeight, inputRef?.current?.clientHeight, data])
 

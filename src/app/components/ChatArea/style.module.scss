@@ -15,7 +15,6 @@
   &_container {
     display: flex;
     flex-direction: column;
-    //min-height: calc(100% - 85.5px);
   }
 
   &_header {
@@ -79,6 +78,10 @@
     border-radius: 6px;
     overflow-y: auto;
     @include custom_scrollbar(4px, $greyLight);
+  }
+
+  &_bottom {
+    height: 1px;
   }
 }
 
