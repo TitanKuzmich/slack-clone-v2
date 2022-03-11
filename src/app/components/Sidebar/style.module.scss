@@ -72,7 +72,7 @@
     &_content {
       overflow-y: auto;
       max-height: 273px;
-      @include custom_scrollbar(4px, $greyLight);
+      @include custom_scrollbar(4px, $greyLight, $slackColor, transparent);
     }
   }
 

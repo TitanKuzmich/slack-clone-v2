@@ -77,7 +77,14 @@
     border: 1px solid $slackBorder;
     border-radius: 6px;
     overflow-y: auto;
-    @include custom_scrollbar(4px, $greyLight);
+    overflow-x: hidden;
+    @include custom_scrollbar(4px, $grey, $slackColor, transparent);
+    &::-webkit-scrollbar-thumb {
+      border-right: none;
+      border-left: 1px solid $slackColor;
+      border-top: 1px solid $slackColor;
+      border-bottom: 1px solid $slackColor;
+    }
   }
 
   &_bottom {

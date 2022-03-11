@@ -82,7 +82,7 @@
   text-overflow: ellipsis;
 }
 
-@mixin custom_scrollbar($width, $color) {
+@mixin custom_scrollbar($width, $color, $borderColor, $trackColor) {
   &::-webkit-scrollbar {
     position: relative;
     z-index: 10;
@@ -94,6 +94,7 @@
   &::-webkit-scrollbar-track {
     z-index: 10;
     border-radius: 3px;
+    background: $trackColor;
   }
 
   /* Handle */
@@ -101,7 +102,7 @@
     z-index: 10;
     background: $color;
     border-radius: 3px;
-    outline: 1px solid $slackColor;
+    border: 1px solid $borderColor;
   }
 
   /* Handle on hover */

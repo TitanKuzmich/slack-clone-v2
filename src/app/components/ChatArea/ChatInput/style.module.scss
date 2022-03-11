@@ -98,7 +98,6 @@
     }
 
     &_area {
-      @include custom_scrollbar(4px, $slackColor);
       font-size: 14px;
       line-height: 16px;
       height: fit-content;
@@ -109,6 +108,15 @@
       width: 100%;
       border: none;
       resize: none;
+      @include custom_scrollbar(4px, $grey, $slackColor, transparent);
+
+      &::-webkit-scrollbar-thumb {
+        border-right: none;
+        border-left: 1px solid $slackColor;
+        border-top: 1px solid $slackColor;
+        border-bottom: 1px solid $slackColor;
+      }
+
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     }
   }
