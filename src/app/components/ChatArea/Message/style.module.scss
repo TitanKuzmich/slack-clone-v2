@@ -1,4 +1,5 @@
 @import "styles/palette";
+@import "styles/mixins";
 
 .message{
   &_container {
@@ -100,6 +101,106 @@
     margin: 6px 0 0 28px;
     font-size: 14px;
     color: $black;
+  }
+
+  &_edit {
+    padding-top: 13px;
+    background: $white;
+    border: 1px solid $slackBorder;
+    border-radius: 6px;
+    display: grid;
+    grid-template-rows: auto 51px;
+    position: relative;
+
+    .emoji_edit {
+      right: unset;
+      transform-origin: unset;
+
+      &__top {
+        display: block;
+        bottom: -14px;
+        left: -60px;
+      }
+
+      &__bottom {
+        display: block;
+        top: 14px;
+        left: -28px;
+      }
+    }
+
+    &_area {
+      font-size: 14px;
+      line-height: 16px;
+      height: fit-content;
+      padding: 0 13px;
+      width: 100%;
+      color: $black;
+      background: transparent;
+      border: none;
+      resize: none;
+      @include custom_scrollbar(3px, $grey, $slackColor, transparent);
+
+      &::-webkit-scrollbar-thumb {
+        border-right: none;
+        border-left: 1px solid $slackColor;
+        border-top: 1px solid $slackColor;
+        border-bottom: 1px solid $slackColor;
+      }
+
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    }
+
+    .actions {
+      &_wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 13px;
+        padding: 13px;
+        border-top: 1px solid $slackColor;
+      }
+
+      &_icon {
+        cursor: pointer;
+        fill: $black;
+        width: 24px;
+        height: 24px;
+        transition: all .15s ease;
+
+        &:hover {
+          fill: $slackColor;
+        }
+      }
+
+      &_buttons {
+        display: flex;
+        align-items: center;
+      }
+
+      &_send {
+        @include button($slackColor);
+        min-height: unset;
+        min-width: unset;
+        font-size: 14px;
+        padding: 3px 6px;
+
+        &__disabled {
+          background-color: darken($slackColor, 40%);
+          cursor: default;
+          pointer-events: none;
+        }
+      }
+
+      &_cancel {
+        @include button($greyLight);
+        min-height: unset;
+        min-width: unset;
+        font-size: 14px;
+        padding: 3px 6px;
+        margin-right: 13px;
+      }
+    }
   }
 
   &_files {

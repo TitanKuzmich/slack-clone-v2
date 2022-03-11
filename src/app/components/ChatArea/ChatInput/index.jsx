@@ -204,8 +204,7 @@ const ChatInput = ({collection, channelName, room, bottomRef, setInputHeight}) =
                 <Hotkeys
                     keyName="ctrl+enter, command+enter"
                     filter={(e) => {
-                        if (e.key === 'Control'
-                            || e.key === 'Command'
+                        if (e.key === 'Command'
                             || e.key === 'Ctrl'
                         ) {
                             e.preventDefault()

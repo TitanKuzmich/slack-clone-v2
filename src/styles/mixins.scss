@@ -168,6 +168,8 @@
 }
 
 @mixin button($background) {
+  display: grid;
+  place-items: center;
   min-height: 36px;
   min-width: 85px;
   background-color: $background;
