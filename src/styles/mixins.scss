@@ -84,6 +84,7 @@
 
 @mixin custom_scrollbar($width, $color) {
   &::-webkit-scrollbar {
+    position: relative;
     z-index: 10;
     width: $width;
     right: 2px;

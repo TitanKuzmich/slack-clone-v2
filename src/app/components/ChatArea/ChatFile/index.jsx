@@ -8,7 +8,7 @@ import Icon from "components/Icon"
 import style from './style.module.scss'
 import icons from "assets/svg"
 
-const ChatFile = ({file, removeFile, noRemove = false}) => {
+const ChatFile = ({file, removeFile, noRemove = false, fileNameLength = 9}) => {
     return (
         <div
             className={cn(style.uploaded_file, {
@@ -16,7 +16,7 @@ const ChatFile = ({file, removeFile, noRemove = false}) => {
             })}
         >
             <a href={file.fileUrl || '#'} target='_blank' rel='noopener noreferrer'>
-                {getFileName(file.name, 9)}
+                {getFileName(file.name, fileNameLength)}
             </a>
 
             {!noRemove && (

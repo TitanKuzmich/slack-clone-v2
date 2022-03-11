@@ -72,6 +72,7 @@ const Message = ({message, deleteMessage}) => {
                 {message.attachments.map(file => {
                         return (
                             <ChatFile
+                                fileNameLength={10}
                                 key={file.id}
                                 file={file}
                                 removeFile={() => {
