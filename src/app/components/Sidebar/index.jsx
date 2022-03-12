@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {Oval} from "react-loader-spinner"
 import {useAuthState} from "react-firebase-hooks/auth"
 
-import {auth} from "lib/firebase"
+import {auth, db} from "lib/firebase"
 import {getChannelsList, getDirectsList} from "state/dispatchers/channels"
 import Icon from "components/Icon"
 import SidebarOption from "components/Sidebar/SidebarOption"
@@ -11,6 +11,7 @@ import {sidebarOptions, sidebarChannelsOptions, sidebarDirectsOptions} from "com
 
 import style from './style.module.scss'
 import icons from "assets/svg"
+import {enterRoom} from "state/actions/app"
 
 const Sidebar = () => {
     const [user] = useAuthState(auth)
@@ -19,6 +20,27 @@ const Sidebar = () => {
     const {channels, isLoadingChannels, directs, isLoadingDirects} = useSelector(state => state.channels)
 
     const dispatch = useDispatch()
+
+    const onDelete = (e, id, channels) => {
+        e.stopPropagation()
+
+        const queryRef = channels
+            ? db.channels.doc(id)
+            :  db.directs.doc(id)
+
+        queryRef
+            .delete()
+            .then(() => {
+                channels
+                    ? dispatch(getChannelsList(user.uid))
+                    : dispatch(getDirectsList(user.uid))
+
+                dispatch(enterRoom({
+                    roomId: "",
+                    channels: channels
+                }))
+            })
+    }
 
     useEffect(() => {
         dispatch(getChannelsList(user.uid))
@@ -68,7 +90,9 @@ const Sidebar = () => {
                                         key={channel.id}
                                         id={channel.id}
                                         title={channel.name}
+                                        creator={channel.creator}
                                         active={roomId}
+                                        deleteAction={onDelete}
                                         channels
                                     />
                                 ))}
@@ -107,6 +131,7 @@ const Sidebar = () => {
                                         photoURL={direct.previewURL}
                                         title={direct.name}
                                         active={roomId}
+                                        deleteAction={onDelete}
                                     />
                                 ))}
                             </>

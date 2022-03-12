@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react'
+import dayjs from "dayjs"
 import {useDispatch, useSelector} from "react-redux"
 import {useAuthState} from "react-firebase-hooks/auth"
+import {Oval} from "react-loader-spinner"
 
 import {auth, db} from "lib/firebase"
+import {enterRoom} from "state/actions/app"
 import {getUserList} from "state/dispatchers/app"
+import {getChannelsList, getDirectsList} from "state/dispatchers/channels"
 import Modal from "components/Modal"
+import TitleWithAvatar from "components/TitleWithAvatar"
 
 import style from '../style.module.scss'
-import {Oval} from "react-loader-spinner"
-import dayjs from "dayjs"
-import TitleWithAvatar from "components/TitleWithAvatar"
 
 const DEFAULT_DATA = {
     creator: {},
@@ -41,7 +43,6 @@ const DetailsModal = ({info, onCloseAction}) => {
     }
 
     const findMembers = () => {
-
         const members = info.usersIds.map(id => {
             return [...userList, {
                 id: user.uid,
@@ -53,6 +54,68 @@ const DetailsModal = ({info, onCloseAction}) => {
         })
 
         return members.flat()
+    }
+
+    const getButtonText = () => {
+        if (!info.isChannel) return "Delete Chat"
+        if (info.private) return "Leave channel"
+        if (user.uid === info.creator) return "Delete channel"
+    }
+
+    const onLeave = () => {
+        if (!info.isChannel) {
+            console.log(info)
+            db
+                .directs
+                .doc(info.id)
+                .delete()
+                .then(() => {
+                    dispatch(getDirectsList(user.uid))
+
+                    dispatch(enterRoom({
+                        roomId: "",
+                        channels: false
+                    }))
+                    onCloseAction()
+                })
+                .catch(e => console.log(e.message))
+        } else {
+            if (user.uid === info.creator) {
+                db
+                    .channels
+                    .doc(info.id)
+                    .delete()
+                    .then(() => {
+                        dispatch(getChannelsList(user.uid))
+
+                        dispatch(enterRoom({
+                            roomId: "",
+                            channels: false
+                        }))
+                        onCloseAction()
+                    })
+                    .catch(e => console.log(e.message))
+            } else {
+                const updatedUsersIds = info.usersIds.filter(id => id !== user.uid)
+
+                db
+                    .channels
+                    .doc(info.id)
+                    .update({
+                        usersIds: updatedUsersIds
+                    }, {merge: true})
+                    .then(() => {
+                        dispatch(getChannelsList(user.uid))
+
+                        dispatch(enterRoom({
+                            roomId: "",
+                            channels: false
+                        }))
+                        onCloseAction()
+                    })
+                    .catch(e => console.log(e.message))
+            }
+        }
     }
 
     useEffect(() => {
@@ -96,16 +159,17 @@ const DetailsModal = ({info, onCloseAction}) => {
                             {dayjs(info.timestamp?.toDate()).format("HH:mm")}
                         </p>
 
-                        {info.isChannel
-                        && <p
-                            className={style.modal_content__text}><strong>Type: </strong>{info.private ? "Private" : "Public"}</p>
-                        }
+                        {info.isChannel && (
+                            <p className={style.modal_content__text}>
+                                <strong>Type: </strong>{info.private ? "Private" : "Public"}
+                            </p>
+                        )}
 
                         <br/>
 
                         {(data.members?.length > 0 && info.private)
                         || (data.members?.length > 0 && !info.isChannel) ? (
-                            <p className={style.modal_content__text}>
+                            <div className={style.modal_content__text}>
                                 <strong>Members: </strong>
                                 <div className={style.members}>
                                     {data.members?.map(member => (
@@ -118,13 +182,19 @@ const DetailsModal = ({info, onCloseAction}) => {
                                         />
                                     ))}
                                 </div>
-                            </p>
+                            </div>
                         ) : (
                             <p className={style.modal_content__text}>
                                 <strong>Members: </strong>
                                 <span>All users are added.</span>
                             </p>
                         )}
+
+                        {!info.isChannel || (info.private && info.isChannel) &&
+                            <div className={style.delete_button} onClick={onLeave}>
+                                {getButtonText()}
+                            </div>
+                        }
                     </>
                 )}
             </>

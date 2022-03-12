@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch} from "react-redux"
 import cn from 'classnames'
 import {useAuthState} from "react-firebase-hooks/auth"
@@ -11,6 +11,7 @@ import TitleWithAvatar from "components/TitleWithAvatar"
 import Icon from "components/Icon"
 
 import style from './style.module.scss'
+import icons from "assets/svg"
 
 const DEFAULT_DATA = {
     name: "",
@@ -24,9 +25,11 @@ const SidebarOption = ({
                            icon,
                            title,
                            id,
+                           creator,
                            active,
                            bold,
                            addAction,
+                           deleteAction,
                            haveDivider,
                            photoURL,
                            channels = false
@@ -36,6 +39,7 @@ const SidebarOption = ({
 
     const [isOpen, setOpen] = useState(false)
     const [data, setData] = useState(DEFAULT_DATA)
+    const [deleteAvailable, setDeleteAvailable] = useState(false)
 
     const selectChannel = () => {
         if (id) {
@@ -66,6 +70,11 @@ const SidebarOption = ({
         dispatch(createRoom(channelsData, channels, onClose))
     }
 
+    useEffect(() => {
+        (user.uid === creator || !channels)
+        && setDeleteAvailable(true)
+    }, [user])
+
     return (
         <>
             {isOpen &&
@@ -83,7 +92,8 @@ const SidebarOption = ({
             <div
                 className={cn(style.option_container, {
                     [style.option_container__active]: active && id === active,
-                    [style.option_container__border]: haveDivider
+                    [style.option_container__border]: haveDivider,
+                    [style.option_container__delete]: deleteAction && deleteAvailable
                 })}
                 onClick={
                     addAction
@@ -107,6 +117,10 @@ const SidebarOption = ({
                         title={title}
                     />
                 )}
+
+                {deleteAction && (deleteAvailable || !channels) &&
+                <Icon icon={icons.Delete} classIcon={style.icon_delete} onClick={(e) => deleteAction(e, id, channels)}/>
+                }
             </div>
         </>
     )

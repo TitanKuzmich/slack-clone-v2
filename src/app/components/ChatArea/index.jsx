@@ -76,7 +76,7 @@ const ChatArea = () => {
 
                     {isShowDetails && (
                         <DetailsModal
-                            info={roomDetails?.data()}
+                            info={roomDetails && db.formatDoc(roomDetails)}
                             onCloseAction={() => setShowDetails(false)}
                         />
                     )}

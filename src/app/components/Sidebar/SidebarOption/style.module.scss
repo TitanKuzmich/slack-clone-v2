@@ -25,8 +25,35 @@
       border-bottom: 1px solid $slackBorder;
     }
 
+    &__delete {
+      grid-template-columns: 24px 1fr 20px;
+    }
+
     .option_title__bold {
       font-weight: 700;
+    }
+  }
+
+  &_container__delete {
+    .icon_delete {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+      fill: $white;
+      cursor: pointer;
+      transition: opacity .15s ease;
+
+      &:hover {
+        fill: $red;
+      }
+    }
+
+    &:hover .icon_delete {
+      pointer-events: unset;
+      width: 20px;
+      height: 20px;
+      opacity: 1;
     }
   }
 

@@ -60,6 +60,7 @@
   &_content {
     background-color: $white;
     padding: 30px 16px;
+    min-height: 155px;
 
     &__text {
       font-size: 16px;
@@ -152,60 +153,10 @@
       }
     }
 
-    &__upload {
-      position: relative;
-      padding: 12px 24px;
-      border-radius: 6px;
-      font-size: 18px;
-      color: $slackColor;
-      border: 1px dashed $slackColor;
-      transition: all .3s ease;
-      text-align: center;
-      cursor: pointer;
-      margin: 0 auto;
-      display: block;
+    .delete_button {
+      @include button($red);
       width: fit-content;
-
-      &:hover {
-        color: $slackDark;
-        border: 1px dashed $slackDark;
-      }
-    }
-
-    .uploaded {
-      &_files {
-        margin-top: 20px;
-        max-height: 170px;
-        overflow-y: auto;
-      }
-
-      &_file {
-        padding: 5px 12px;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        justify-content: space-between;
-        border-radius: 6px;
-        color: $greyDark;
-
-        &__done {
-          background-color: $slackLight;
-        }
-
-        &:not(:first-child) {
-          margin-top: 5px;
-        }
-
-        &_delete {
-          fill: $greyDark;
-          cursor: pointer;
-
-          &:hover {
-            fill: $red;
-          }
-        }
-      }
+      margin: 19px auto 0 auto;
     }
   }
 
