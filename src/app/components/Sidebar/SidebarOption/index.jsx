@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux"
 import cn from 'classnames'
 import {useAuthState} from "react-firebase-hooks/auth"
 
-import {auth} from "lib/firebase"
+import {auth, db} from "lib/firebase"
 import {createRoom} from "state/dispatchers/channels"
 import {enterRoom} from "state/actions/app"
 import CreateModal from "components/Modal/CreateModal"
@@ -58,7 +58,9 @@ const SidebarOption = ({
             usersIds: [
                 ...data.usersIds,
                 user.uid
-            ]
+            ],
+            timestamp: db.getCurrentTimestamp,
+            isChannel: channels
         }
 
         dispatch(createRoom(channelsData, channels, onClose))

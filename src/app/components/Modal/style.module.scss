@@ -63,7 +63,48 @@
 
     &__text {
       font-size: 16px;
-      color: $black
+      color: $black;
+
+      .members {
+        margin-top: 6px;
+        display: grid;
+        grid-template-rows: repeat(auto-fit, 24px);
+        grid-row-gap: 13px;
+        max-height: 350px;
+        padding: 6px 13px;
+        border: 1px solid $slackBorder;
+        border-radius: 6px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        @include custom_scrollbar(4px, $grey, $slackColor, transparent);
+
+        &::-webkit-scrollbar-thumb {
+          border-right: none;
+          border-left: 1px solid $slackColor;
+          border-top: 1px solid $slackColor;
+          border-bottom: 1px solid $slackColor;
+        }
+      }
+
+      .member_wrapper {
+        grid-template-columns: 20px 1fr;
+
+        h3 {
+          color: $black;
+          font-size: 14px;
+        }
+
+        img, div {
+          width: 20px;
+          height: 20px;
+        }
+
+        div {
+          background-color: $slackColor;
+          border: 1px solid $slackColor;
+          font-size: 12px;
+        }
+      }
     }
 
     &__input {

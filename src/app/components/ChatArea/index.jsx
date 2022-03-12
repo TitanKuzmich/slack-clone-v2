@@ -9,6 +9,7 @@ import Icon from "components/Icon"
 import TitleWithAvatar from "components/TitleWithAvatar"
 import Message from "components/ChatArea/Message"
 import ChatInput from "components/ChatArea/ChatInput"
+import DetailsModal from "components/Modal/DetailsModal"
 
 import style from './style.module.scss'
 import icons from "assets/svg"
@@ -20,6 +21,7 @@ const ChatArea = () => {
     const queryRef = useRef(null)
 
     const [inputHeight, setInputHeight] = useState(0)
+    const [isShowDetails, setShowDetails] = useState(false)
 
     const [roomDetails] = useDocument(
         room.channels && room.roomId && db.channels.doc(room.roomId)
@@ -48,16 +50,18 @@ const ChatArea = () => {
     }
 
     useEffect(() => {
-        bottomRef?.current?.scrollIntoView({behavior: "smooth"})
+        room.roomId && bottomRef?.current?.scrollIntoView({behavior: "smooth"})
     }, [room.roomId, loading])
 
     useEffect(() => {
-        queryRef.current = room.roomId && room.channels
-            ? db.channels.doc(room.roomId).collection('messages')
-            : db.directs.doc(room.roomId).collection('messages')
+        if(room.roomId) {
+            queryRef.current = room.channels
+                ? db.channels.doc(room.roomId).collection('messages')
+                :  db.directs.doc(room.roomId).collection('messages')
+        }
     }, [room.roomId, room.channels])
 
-    if (!roomMessages && !roomDetails && !loading) {
+    if (!roomDetails && !room.roomId && !loading) {
         return (
             <div className={cn(style.chat_wrapper, style.chat_wrapper__empty)}>
                 Choose any chat.
@@ -67,25 +71,31 @@ const ChatArea = () => {
 
     return (
         <>
-            {!loading ? (
+            {!loading && room.roomId ? (
                 <div className={style.chat_wrapper}>
+
+                    {isShowDetails && (
+                        <DetailsModal
+                            info={roomDetails?.data()}
+                            onCloseAction={() => setShowDetails(false)}
+                        />
+                    )}
+
                     <div className={style.chat_header}>
                         <div className={style.chat_header__left}>
                             <TitleWithAvatar.TitleWithAvatarWrap
-                                channels={roomDetails?.data().channels}
-                                photoURL={roomDetails?.data().photoURL}
-                                title={roomDetails?.data().name}
+                                channels={roomDetails?.data()?.channels}
+                                photoURL={roomDetails?.data()?.photoURL}
+                                title={roomDetails?.data()?.name}
                                 className={style.chat_header_info}
                             />
 
-                            <p>{roomDetails?.data().usersIds.length} members</p>
+                            <p>{roomDetails?.data()?.usersIds?.length} members</p>
                         </div>
 
                         <div
                             className={style.chat_header__right}
-                            //TODO popup with details
-                            onClick={() => {
-                            }}
+                            onClick={() => setShowDetails(true)}
                         >
                             <Icon icon={icons.Info} classIcon={style.chat_details__icon}/>
                             <p>Details</p>
@@ -114,13 +124,13 @@ const ChatArea = () => {
                             <div className={style.chat_bottom} ref={bottomRef}/>
                         </div>
 
-                    <ChatInput
-                        collection={queryRef.current}
-                        bottomRef={bottomRef}
-                        channelName={roomDetails?.data().name}
-                        room={room}
-                        setInputHeight={setInputHeight}
-                    />
+                        <ChatInput
+                            collection={queryRef.current}
+                            bottomRef={bottomRef}
+                            channelName={roomDetails?.data()?.name}
+                            room={room}
+                            setInputHeight={setInputHeight}
+                        />
                     </div>
                 </div>
             ) : (

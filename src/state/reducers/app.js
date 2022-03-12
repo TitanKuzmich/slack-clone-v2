@@ -5,8 +5,8 @@ import * as actions from "../actions/app"
 const defaultState = {
     notifications: [],
     room: {
-        roomId:"m5HYh5akdUdwSAClv6oL",
-        channels:false
+        roomId:"",
+        channels: false
     },
     userList: [],
     isLoading: false

@@ -56,9 +56,16 @@
     &__right {
       display: flex;
       align-items: center;
+      cursor: pointer;
 
       p {
         font-size: 14px;
+      }
+
+      &:hover {
+        p {
+          color: $slackColor;
+        }
       }
     }
   }
@@ -67,6 +74,10 @@
     width: 20px;
     height: 20px;
     margin-right: 6px;
+
+    &:hover {
+      fill: $slackColor;
+    }
   }
 
   &_messages {
@@ -79,6 +90,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     @include custom_scrollbar(4px, $grey, $slackColor, transparent);
+
     &::-webkit-scrollbar-thumb {
       border-right: none;
       border-left: 1px solid $slackColor;
