@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {useDispatch, useSelector} from "react-redux"
 import {useNavigate} from "react-router-dom"
 import {useAuthState} from "react-firebase-hooks/auth"
 import cn from "classnames"
@@ -16,8 +15,10 @@ const Header = () => {
     const navigate = useNavigate()
 
     const [isInfoOpen, setInfoOpen] = useState(false)
+    const [isAppsOpen, setAppsOpen] = useState(false)
 
     const popupRef = useRef(null)
+    const appsRef = useRef(null)
 
     const onSignOut = () => {
         auth
@@ -40,6 +41,10 @@ const Header = () => {
                 event.stopPropagation()
                 setInfoOpen(false)
             }
+            if (appsRef?.current && !appsRef?.current.contains(event.target)) {
+                event.stopPropagation()
+                setAppsOpen(false)
+            }
         }
 
         document.addEventListener("mousedown", handleClickOutside)
@@ -56,8 +61,21 @@ const Header = () => {
             <div/>
 
             <div className={style.header_apps}>
-                <div className={style.icon_wrapper}>
-                    <Icon icon={icons.Apps} classIcon={style.apps_icon}/>
+                <div className={cn(style.icon_wrapper, {[style.icon_wrapper__open]: isAppsOpen})}>
+                    <Icon icon={icons.Apps} classIcon={style.apps_icon} onClick={() => setAppsOpen(!isAppsOpen)}/>
+
+                    <div ref={appsRef}>
+                        {isAppsOpen && (
+                            <div className={style.apps_pop_up}>
+                                <a className={style.apps_item} href="https://drive-clone-ef41c.web.app/" target='_blank' rel="noopener noreferrer">
+                                    <img src={images.DocsLogo} alt="logo"/>
+                                </a>
+                                <a className={style.apps_item} href="https://docs-clone-5f2a9.web.app/docs" target='_blank' rel="noopener noreferrer">
+                                    <img src={images.DriveLogo} alt="logo"/>
+                                </a>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className={cn(style.header_avatar, {[style.header_avatar__open]: isInfoOpen})}>
